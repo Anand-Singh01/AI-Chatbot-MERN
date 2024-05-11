@@ -4,3 +4,8 @@ export const signUpSchema = z.object({
     email:z.string().email({message:"Invalid email"}),
     password:z.string().min(5, {message:"password should be minimum 5 characters long."})
 })
+
+export const logInSchema = z.object({
+    email:z.string().email({message:"Invalid email"}),
+    password:z.string().min(5, {message:"password should be minimum 5 characters long."})
+})
