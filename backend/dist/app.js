@@ -4,7 +4,7 @@ import chatRoutes from './routes/chat.js';
 import userRoutes from './routes/user.js';
 config();
 const app = express();
-//middlewares
+//middleware
 app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/chats", chatRoutes);

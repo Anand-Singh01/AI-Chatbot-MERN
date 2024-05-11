@@ -4,6 +4,9 @@ node_modules/
 # Environment variables file
 .env
 
+# Ignore dist directory
+dist/
+
 # Build output
 /build/
 

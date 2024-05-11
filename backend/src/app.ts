@@ -6,7 +6,7 @@ import userRoutes from './routes/user.js';
 config();
 const app = express();
 
-//middlewares
+//middleware
 app.use(express.json());
 
 app.use("/user", userRoutes); 
