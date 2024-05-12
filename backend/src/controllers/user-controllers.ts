@@ -52,11 +52,31 @@ export const userLogin = async(req:Request, res: Response)=>
                 return res.status(401).json({ msg: "Invalid username or password" });
             }
             handleTokenAndCookie(res, user._id.toString(), user.email, "7d");
-            return res.status(200).json({message:"ok", id:user._id.toString()});
+            return res.status(200).json({message:"ok", email, name:user.name});
         }
         catch(error : any)
         {
             console.log(error); 
             return res.status(500).json({message:"Server error"});
         } 
+}
+
+export const verifyUser = async(req:Request, res: Response)=>
+{
+    try
+    {
+        const {email} = res.locals.jwtData;
+        console.log(email);
+        const user = await User.findOne({email});
+        if(!user)
+        {
+            return res.status(401).json({ msg: "Token malfunctioned" });
+        }
+        return res.status(200).json({message:"ok", email, name:user.name});
+    }
+    catch(error)
+    {
+        console.log(error); 
+        return res.status(500).json({message:"Server error"});
+    }
 }
