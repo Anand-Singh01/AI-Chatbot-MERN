@@ -21,6 +21,10 @@ export const verifyToken = (req: Request, res: Response, next:NextFunction)=>
     try
     {
         const token = req.signedCookies[COOKIE_NAME];
+        if(!token || token.trim() == '')
+        {
+            return res.status(401).json({message:"Session expired"});
+        }
         const data = jwt.verify(token, process.env.JWT_SECRET!);
         res.locals.jwtData = data;
         next();
