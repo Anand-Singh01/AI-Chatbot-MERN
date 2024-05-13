@@ -24,9 +24,10 @@ const Login = () => {
     {
       toast.loading("Signing In", { id: "login" });
       const data = await loginUser(email, password);
-    if (data) {
+    if (data && data.message === 'ok') {
       setCurrentUserAtom({ email: data.email, name: data.name });
       setIsLoggedIn(true);
+      navigate('/chat');
     }
       toast.success("Signed In Successfully", { id: "login" });
     } catch (error) {

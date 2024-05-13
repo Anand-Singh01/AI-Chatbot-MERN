@@ -22,18 +22,16 @@ const chatSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
-    role:{
+    message:{
         type: String,
         required: true
     },
-    content:{
-        type:String,
-        required: true
+    response:{
+        type:String
     }
     
 })
 
 const User =  mongoose.model("User", userSchema);
 const Chat = mongoose.model("Chat", chatSchema);
-
 export { Chat, User };

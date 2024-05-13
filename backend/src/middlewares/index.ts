@@ -30,16 +30,15 @@ export const validateLogin = (req : Request, res : Response, next: NextFunction)
 }
 
 export const validateMessage = (req : Request, res : Response, next: NextFunction)=>
+{
+    const {message} = req.body;
+    const obj = {message}
+    const result = messageSchema.safeParse(obj);
+    if(!result.success)
     {
-        console.log('hellooo');
-            const {message} = req.body;
-            const obj = {message}
-            const result = messageSchema.safeParse(obj);
-            if(!result.success)
-            {
-                const errors = result.error.issues.map(({ message }) => ({ msg: message }));
-                res.status(401).json({errors:errors});
-                return;
-            }
-            next();
+        const errors = result.error.issues.map(({ message }) => ({ msg: message }));
+        res.status(401).json({errors:errors});
+        return;
     }
+    next();
+}

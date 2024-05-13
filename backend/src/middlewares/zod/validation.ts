@@ -11,5 +11,5 @@ export const logInSchema = z.object({
 })
 
 export const messageSchema = z.object({
-    message:z.string().min(1, {message:"username should be minimum 1 characters long."})
+    message:z.string().min(1, {message:"Invalid message"})
 })
