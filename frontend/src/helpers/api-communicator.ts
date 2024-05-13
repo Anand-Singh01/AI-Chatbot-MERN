@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const loginUser = async(email: string, password: string)=>
 {
     try
@@ -18,6 +19,24 @@ export const loginUser = async(email: string, password: string)=>
     }
 }
 
+export const logoutUser = async()=>
+    {
+        try
+        {
+            const res = await axios.get("/user/logout")
+            if (res.status !== 200) 
+            {
+                throw new Error("unable to logout");
+            }
+            const data = await res.data;
+            return data;
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+    }
+
 export const checkAuthStatus = async()=>
 {
     try
@@ -32,7 +51,7 @@ export const checkAuthStatus = async()=>
     }
     catch(error)
     {
-        console.log(error);
+        alert('Session expired.');
     }
 }
 
@@ -70,4 +89,4 @@ export const getAllChats = async()=>
         {
             console.log(error);
         }
-    }
+}

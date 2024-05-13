@@ -8,10 +8,8 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { IoMdSend } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import ChatItem from "../components/chat/ChatItem";
-import { checkAuthStatus } from "../helpers/api-communicator";
 import {
   chatListSelector,
   currentMessageAtom,
@@ -20,7 +18,6 @@ import {
 import { Message } from "../types";
 
 const Chat = () => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [chats, setChats] = useState<Message[]>([]);
   const [currentMessageId, setCurrentMessageId] =
@@ -29,16 +26,6 @@ const Chat = () => {
   const singleChatMessage = useRecoilValueLoadable(singleChatSelector);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    const checkSessionValidity = async () => {
-      const res = await checkAuthStatus();
-      if (res.message !== "ok") {
-        alert("session ended");
-        navigate("/login");
-      }
-    };
-    checkSessionValidity();
-  });
   useEffect(() => {
     if (chatMessages.state === "hasValue") {
       setChats(chatMessages.contents);

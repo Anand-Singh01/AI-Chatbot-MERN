@@ -7,7 +7,7 @@ const Home = () => {
   const isBelowMd = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Box width={"100%"} height={"100%"}>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           width: "100%",
@@ -58,7 +58,7 @@ const Home = () => {
           />
         </Box>
       </Box>
-      <Footer />
+      <Footer /> */}
     </Box>
   );
 };

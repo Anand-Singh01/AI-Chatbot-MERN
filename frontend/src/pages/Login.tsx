@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoIosLogIn } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -11,15 +11,20 @@ import { currentUserAtom, isLoggedInAtom } from "../store/atoms/atom";
 const Login = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
+  const [isGuest, setIsGuest] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
+    let email = formData.get("email") as string;
+    let password = formData.get("password") as string;
+    if(isGuest)
+    {
+      email = "test123@gmail.com";
+      password = "1231122";
+    }
     try 
     {
       toast.loading("Signing In", { id: "login" });
@@ -94,6 +99,28 @@ const Login = () => {
               endIcon={<IoIosLogIn />}
             >
               Login
+            </Button>
+
+            <Button
+            type="submit"
+            onClick={()=>{
+              setIsGuest(true)
+            }}
+              sx={{
+                px: 2,
+                py: 1,
+                mt: 2,
+                width: "400px",
+                borderRadius: 2,
+                bgcolor: "#00fffc",
+                ":hover": {
+                  bgcolor: "white",
+                  color: "black",
+                },
+              }}
+              endIcon={<IoIosLogIn />}
+            >
+              Login As Guest
             </Button>
           </Box>
         </form>

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllUsers, userLogin, userSignup, verifyUser } from "../controllers/user-controllers.js";
+import { getAllUsers, userLogin, userLogout, userSignup, verifyUser } from "../controllers/user-controllers.js";
 import { validateLogin, validateSignUp } from "../middlewares/index.js";
 import { verifyToken } from "../utils/token.js";
 
@@ -17,7 +17,7 @@ userRoutes.post('/login', validateLogin, userLogin);
 // /user/auth-status
 userRoutes.get('/auth-status', verifyToken, verifyUser);
 
-
-
+// /user/logout
+userRoutes.get('/logout', verifyToken, userLogout);
 
 export default userRoutes;

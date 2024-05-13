@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import "./App.css";
 import Header from "./components/Header";
 import { checkAuthStatus } from "./helpers/api-communicator";
@@ -11,7 +11,7 @@ import NotFound from "./pages/NotFound";
 import SignUp from "./pages/Signup";
 import { currentUserAtom, isLoggedInAtom } from "./store/atoms/atom";
 function App() {
-  const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
 
   useEffect(() => {
@@ -23,7 +23,8 @@ function App() {
       }
     }
     checkStatus();
-  });
+  }, [setCurrentUserAtom, setIsLoggedIn]);
+
   return (
     <main>
       <Header />
@@ -31,7 +32,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat" element={ isLoggedIn ? <Chat /> : <Navigate to={'/login'} replace/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

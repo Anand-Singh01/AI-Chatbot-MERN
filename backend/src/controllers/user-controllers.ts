@@ -1,6 +1,7 @@
 import { compare, hash } from "bcrypt";
 import { Request, Response } from "express";
 import { User } from "../models/User.js";
+import { COOKIE_NAME } from "../utils/constants.js";
 import { handleTokenAndCookie } from "../utils/token.js";
 
 export const getAllUsers = async(req : Request, res : Response)=>
@@ -80,3 +81,32 @@ export const verifyUser = async(req:Request, res: Response)=>
         return res.status(500).json({message:"Server error"});
     }
 }
+
+
+export const userLogout = async (
+    req: Request,
+    res: Response,
+  ) => {
+    try {
+      //user token check
+      const { email } = res.locals.jwtData;
+      const user = await User.findOne({email});
+      if (!user) {
+          return res.status(401).json({ msg: "Unauthorized" });
+      }
+  
+      res.clearCookie(COOKIE_NAME, {
+        httpOnly: true,
+        domain: "localhost",
+        signed: true,
+        path: "/",
+      });
+  
+      return res
+        .status(200)
+        .json({ message: "OK", name: user.name, email: user.email });
+    } catch (error : any) {
+      console.log(error);
+      return res.status(200).json({ message: "ERROR", cause: error.message });
+    }
+  };
