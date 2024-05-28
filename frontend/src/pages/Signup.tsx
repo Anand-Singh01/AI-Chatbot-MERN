@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import sandSmall from '../assets/sand-small.jpg';
 import sand from "../assets/sand.jpg";
+import BlurImage from "../components/BlurImage";
 import { signupUser } from "../helpers/api-communicator";
 import { currentUserAtom, isLoggedInAtom } from "../store/atom";
 import { SignupUserType } from "../types";
@@ -35,21 +37,11 @@ export const Signup = () => {
     }
   };
   return (
-    <div className="bg-[#6F7671] h-screen flex justify-center items-center">
-      <img
-        src={sand}
-        style={{
-          // Use the imported image as background
-          backgroundSize: "cover",
-          position: "absolute",
-          width: "100%",
-          height: "100vh", // Example: Set height to full viewport height
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        alt=""
-      />
+    <div className="h-screen flex justify-center items-center">
+      <div
+      className="absolute bg-cover flex justify-center items-center h-[100%] w-[100%] bg-orange-200">
+      <BlurImage src={sand} placeholder={sandSmall}/>
+      </div>
       <div className="md:flex parent-container drop-shadow-2xl rounded-xl items-center md:h-[75%] md:w-[800px] bg-white">
         <section className="hidden md:flex md:w-1/2 h-[100%] text-white rounded-tl-xl rounded-bl-xl bg-[#A4C5B5]">
           <div className="h-full mx-[1rem] text-center flex justify-center items-center">

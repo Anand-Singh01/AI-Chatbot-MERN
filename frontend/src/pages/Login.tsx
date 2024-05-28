@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import galaxySmall from '../assets/galaxy-small.jpg';
 import galaxy from "../assets/galaxy.jpg";
+import BlurImage from "../components/BlurImage";
 import { loginUser } from "../helpers/api-communicator";
 import { currentUserAtom, isLoggedInAtom } from "../store/atom";
 import { LoginUserType } from "../types";
@@ -54,14 +55,10 @@ export const Login = () => {
   }, [credentials, isGuest]);
 
   return (
-    <div className="bg-[#6F7671] relative h-screen flex justify-center items-center">
-      <div style={{ backgroundImage: `url(${galaxySmall})`, backgroundPosition:'center' }}
+    <div className="relative h-screen flex justify-center items-center">
+      <div
       className="absolute bg-cover flex justify-center items-center h-[100%] w-[100%] bg-orange-200">
-        <img src={galaxy} loading="lazy" role="presentation" aria-hidden="true" style={{ // Use the imported image as background
-          backgroundSize: "cover",
-          width:'100%',
-          height: "100%"
-        }} alt="" />
+      <BlurImage src={galaxy} placeholder={galaxySmall}/>
       </div>
       <div className="md:flex parent-container drop-shadow-2xl rounded-xl items-center md:h-[70%] md:w-[800px] bg-white">
         <section className="hidden md:flex md:w-1/2 h-[100%] text-white rounded-tl-xl rounded-bl-xl bg-[#A4C5B5]">
@@ -75,9 +72,9 @@ export const Login = () => {
                 Harness the power of AI with Knowledge Pro. Our platform,
                 powered by the{" "}
                 <span className="text-orange-600 font-semibold">
-                  GPT-3.5 model
+                  GPT-3.5 Turbo model
                 </span>{" "}
-                API, provides instant answers to your questions.
+                provides instant answers to your questions.
               </p>
               <p>
                 Sign in now and unlock a world of knowledge at your fingertips!

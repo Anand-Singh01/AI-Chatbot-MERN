@@ -14,10 +14,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
   const currentPath = window.location.pathname;
-
-  // // Initialize chat state but don't include it in the dependency array
-  // const [chat, setChat] = useRecoilState(chatAtom);
-
+  
   useEffect(() => {
     if (currentPath === "/chat") {
       checkStatus();
