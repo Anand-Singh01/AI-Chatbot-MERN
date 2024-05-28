@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { logInSchema, messageSchema, signUpSchema } from "./zod/validation.js";
+import { logInSchema, messageSchema, signUpSchema, updateCredentialSchema } from "./zod/validation.js";
 
 export const validateSignUp = (req : Request, res : Response, next: NextFunction)=>
 {
@@ -34,6 +34,20 @@ export const validateMessage = (req : Request, res : Response, next: NextFunctio
     const {message} = req.body;
     const obj = {message}
     const result = messageSchema.safeParse(obj);
+    if(!result.success)
+    {
+        const errors = result.error.issues.map(({ message }) => ({ msg: message }));
+        res.status(401).json({errors:errors});
+        return;
+    }
+    next();
+}
+
+export const validateUpdateCredentialsRequest = (req : Request, res : Response, next: NextFunction)=>
+{
+    const {name, currentPassword, newPassword, confirmNewPassword} = req.body;
+    const obj = {name, currentPassword, newPassword, confirmNewPassword};
+    const result = updateCredentialSchema.safeParse(obj);
     if(!result.success)
     {
         const errors = result.error.issues.map(({ message }) => ({ msg: message }));

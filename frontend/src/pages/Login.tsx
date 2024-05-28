@@ -1,132 +1,170 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { toast } from "react-hot-toast";
-import { IoIosLogIn } from "react-icons/io";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import CustomizedInput from "../components/shared/CustomizedInput";
+import galaxySmall from '../assets/galaxy-small.jpg';
+import galaxy from "../assets/galaxy.jpg";
 import { loginUser } from "../helpers/api-communicator";
-import { currentUserAtom, isLoggedInAtom } from "../store/atoms/atom";
-
-const Login = () => {
-  const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
-  const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
+import { currentUserAtom, isLoggedInAtom } from "../store/atom";
+import { LoginUserType } from "../types";
+export const Login = () => {
   const [isGuest, setIsGuest] = useState(false);
+  const [credentials, setCredentials] = useState<LoginUserType>({
+    email: "",
+    password: "",
+  });
+  const fillGuestCredentials = async () => {
+    setIsGuest(true);
+    setCredentials({
+      email: "test123@gmail.com",
+      password: "1231122",
+    });
+  };
+  const { password, email } = credentials;
+  const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
+  const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const submitLoginForm = async (e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) {
+      e.preventDefault();
+    }
 
-    let email = formData.get("email") as string;
-    let password = formData.get("password") as string;
-    if(isGuest)
-    {
-      email = "test123@gmail.com";
-      password = "1231122";
-    }
-    try 
-    {
-      toast.loading("Signing In", { id: "login" });
+    if (email && password && email.trim() !== "" && password.trim() !== "") {
       const data = await loginUser(email, password);
-    if (data && data.message === 'ok') {
-      setCurrentUserAtom({ email: data.email, name: data.name });
-      setIsLoggedIn(true);
-      navigate('/chat');
-    }
-      toast.success("Signed In Successfully", { id: "login" });
-    } catch (error) {
-      console.log(error);
-      toast.error("Signing In Failed", { id: "login" });
+      if (data && data.message === "ok") {
+        setCurrentUserAtom({ email: data.email, name: data.name });
+        setIsLoggedIn(true);
+        navigate("/chat");
+      }
     }
   };
+  useEffect(() => {
+    if (
+      isGuest &&
+      credentials.email === "test123@gmail.com" &&
+      credentials.password === "1231122"
+    ) {
+      submitLoginForm();
+      setIsGuest(false);
+      setCredentials({
+        email: "",
+        password: "",
+      });
+    }
+  }, [credentials, isGuest]);
 
   return (
-    <Box width={"100%"} height={"100%"} display="flex" flex={1}>
-      <Box padding={8} mt={8} display={{ md: "flex", sm: "none", xs: "none" }}>
-        <img src="airobot.png" alt="Robot" style={{ width: "400px" }} />
-      </Box>
-      <Box
-        display={"flex"}
-        flex={{ xs: 1, md: 0.5 }}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={2}
-        ml={"auto"}
-        mt={16}
-      >
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            margin: "auto",
-            padding: "30px",
-            boxShadow: "10px 10px 20px #000",
-            borderRadius: "10px",
-            border: "none",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              variant="h4"
-              textAlign="center"
-              padding={2}
-              fontWeight={600}
-            >
-              Login
-            </Typography>
-            <CustomizedInput type="email" name="email" label="Email" />
-            <CustomizedInput type="password" name="password" label="Password" />
-            <Button
-              type="submit"
-              sx={{
-                px: 2,
-                py: 1,
-                mt: 2,
-                width: "400px",
-                borderRadius: 2,
-                bgcolor: "#00fffc",
-                ":hover": {
-                  bgcolor: "white",
-                  color: "black",
-                },
-              }}
-              endIcon={<IoIosLogIn />}
-            >
-              Login
-            </Button>
+    <div className="bg-[#6F7671] relative h-screen flex justify-center items-center">
+      <div style={{ backgroundImage: `url(${galaxySmall})`, backgroundPosition:'center' }}
+      className="absolute bg-cover flex justify-center items-center h-[100%] w-[100%] bg-orange-200">
+        <img src={galaxy} loading="lazy" role="presentation" aria-hidden="true" style={{ // Use the imported image as background
+          backgroundSize: "cover",
+          width:'100%',
+          height: "100%"
+        }} alt="" />
+      </div>
+      <div className="md:flex parent-container drop-shadow-2xl rounded-xl items-center md:h-[70%] md:w-[800px] bg-white">
+        <section className="hidden md:flex md:w-1/2 h-[100%] text-white rounded-tl-xl rounded-bl-xl bg-[#A4C5B5]">
+          <div className="h-full mx-[1rem] text-center flex justify-center items-center">
+            <div className="flex flex-col gap-3">
+              <h2 className="text-xl font-bold">
+                Welcome to{" "}
+                <span className="text-orange-600">Knowledge Pro!</span>
+              </h2>
+              <p>
+                Harness the power of AI with Knowledge Pro. Our platform,
+                powered by the{" "}
+                <span className="text-orange-600 font-semibold">
+                  GPT-3.5 model
+                </span>{" "}
+                API, provides instant answers to your questions.
+              </p>
+              <p>
+                Sign in now and unlock a world of knowledge at your fingertips!
+              </p>
+            </div>
+          </div>
+        </section>
+        <section className="flex items-center h-[100%] text-black md:w-1/2">
+          <div className="flex items-center w-full justify-center mx-auto">
+            <div className="w-full bg-white rounded-xl sm:max-w-md xl:p-0">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl">
+                  Sign in to your account
+                </h1>
+                <form
+                  onSubmit={submitLoginForm}
+                  className="space-y-4 md:space-y-6"
+                  action="#"
+                >
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900"
+                    >
+                      Your email
+                    </label>
+                    <input
+                      onChange={(e) =>
+                        setCredentials({ email: e.target.value, password })
+                      }
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                      placeholder="abc@mail.com"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="password"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Password
+                    </label>
+                    <input
+                      onChange={(e) =>
+                        setCredentials({ email, password: e.target.value })
+                      }
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="••••••••"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Sign in
+                  </button>
+                  <p className="text-center text-gray-600">OR</p>
+                  <button
+                    onClick={fillGuestCredentials}
+                    type="button"
+                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Guest Sign in
+                  </button>
 
-            <Button
-            type="submit"
-            onClick={()=>{
-              setIsGuest(true)
-            }}
-              sx={{
-                px: 2,
-                py: 1,
-                mt: 2,
-                width: "400px",
-                borderRadius: 2,
-                bgcolor: "#00fffc",
-                ":hover": {
-                  bgcolor: "white",
-                  color: "black",
-                },
-              }}
-              endIcon={<IoIosLogIn />}
-            >
-              Login As Guest
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    </Box>
+                  <p className="text-sm font-light text-gray-500">
+                    Don’t have an account yet?{" "}
+                    <a
+                      onClick={() => navigate("/signup")}
+                      className="font-medium cursor-pointer text-primary-600 hover:underline"
+                    >
+                      Sign up
+                    </a>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 };
-
-export default Login;

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getAllUsers, userLogin, userLogout, userSignup, verifyUser } from "../controllers/user-controllers.js";
-import { validateLogin, validateSignUp } from "../middlewares/index.js";
+import { getAllUsers, updateCredentials, userLogin, userLogout, userSignup, verifyUser } from "../controllers/user-controllers.js";
+import { validateLogin, validateSignUp, validateUpdateCredentialsRequest } from "../middlewares/index.js";
 import { verifyToken } from "../utils/token.js";
 
 const userRoutes = Router();
@@ -16,6 +16,9 @@ userRoutes.post('/login', validateLogin, userLogin);
 
 // /user/auth-status
 userRoutes.get('/auth-status', verifyToken, verifyUser);
+
+// /user/update-credentials
+userRoutes.post('/update-credentials', validateUpdateCredentialsRequest, verifyToken, updateCredentials);
 
 // /user/logout
 userRoutes.get('/logout', verifyToken, userLogout);

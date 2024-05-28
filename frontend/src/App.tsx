@@ -1,42 +1,64 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import "./App.css";
-import Header from "./components/Header";
+import Loading from "./components/Loading";
 import { checkAuthStatus } from "./helpers/api-communicator";
 import Chat from "./pages/Chat";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import { Login } from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import SignUp from "./pages/Signup";
-import { currentUserAtom, isLoggedInAtom } from "./store/atoms/atom";
-function App() {
+import { Signup } from "./pages/Signup";
+import { currentUserAtom, isLoggedInAtom } from "./store/atom";
+
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
+  const currentPath = window.location.pathname;
+
+  // // Initialize chat state but don't include it in the dependency array
+  // const [chat, setChat] = useRecoilState(chatAtom);
 
   useEffect(() => {
+    if (currentPath === "/chat") {
+      checkStatus();
+    } else {
+      setIsLoading(false);
+    }
+
     async function checkStatus() {
-      const data = await checkAuthStatus();
-      if (data) {
-        setCurrentUserAtom({ email: data.email, name: data.name });
-        setIsLoggedIn(true);
+      try {
+        const data = await checkAuthStatus();
+        if (data) {
+          setCurrentUserAtom({ email: data.email, name: data.name });
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error("Error checking auth status:", error);
+        setIsLoggedIn(false);
+      } finally {
+        setIsLoading(false);
       }
     }
-    checkStatus();
-  }, [setCurrentUserAtom, setIsLoggedIn]);
+  }, [currentPath, setCurrentUserAtom, setIsLoggedIn]); // Remove chat from dependencies
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
-    <main>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/chat" element={ isLoggedIn ? <Chat /> : <Navigate to={'/login'} replace/>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </main>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="/chat"
+        element={isLoggedIn ? <Chat /> : <Navigate to={"/login"} replace />}
+      />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
-}
+};
 
 export default App;

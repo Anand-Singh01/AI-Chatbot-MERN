@@ -1,233 +1,151 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
-import { IoMdSend } from "react-icons/io";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import ChatItem from "../components/chat/ChatItem";
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
+import OpenAiImage from "../assets/AI.png";
+import { ChatInput } from "../components/ChatInput";
+import Loading from "../components/Loading";
+import Navbar from "../components/Navbar";
+import ProfileSettings from "../components/ProfileSettings";
+import Query from "../components/Query";
+import Response from "../components/Response";
+import Suggestions from "../components/Suggestions";
 import {
+  chatAtom,
   chatListSelector,
   currentMessageAtom,
+  profileToggleAtom,
   singleChatSelector,
-} from "../store/atoms/atom";
+} from "../store/atom";
 import { Message } from "../types";
 
 const Chat = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [chats, setChats] = useState<Message[]>([]);
-  const [currentMessageId, setCurrentMessageId] =
+  const [chats, setChats] = useRecoilState(chatAtom);
+  const isProfileVisible = useRecoilValue(profileToggleAtom);
+  const chatList = useRecoilValueLoadable(chatListSelector);
+  const [currentMessage, setCurrentMessage] =
     useRecoilState(currentMessageAtom);
-  const chatMessages = useRecoilValueLoadable(chatListSelector);
   const singleChatMessage = useRecoilValueLoadable(singleChatSelector);
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    if (chatMessages.state === "hasValue") {
-      setChats(chatMessages.contents);
-      setIsLoading(false);
-    } else if (chatMessages.state === "loading") {
-      setIsLoading(true);
-    }
-  }, [chatMessages]);
+  const [isLoading, setIsPageLoading] = useState(true);
+  const [isResponseLoading, setIsResponseLoading] = useState(false);
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
 
-  const sendMessage = async () => {
-    if (inputRef.current) {
-      const userMessage = inputRef.current.value;
-      inputRef.current.value = "";
-      setCurrentMessageId(userMessage);
-      setChats((prevChats) => [
-        ...prevChats,
-        { message: userMessage, response: "" }, // Add user's message without waiting for response
-      ]);
+  const scrollToBottom = () => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const handleDeleteChats = () => {
-    setChats([]);
-  };
+  useEffect(() => {
+    if (chatList.state === "hasValue") {
+      setChats(chatList.contents);
+      setIsPageLoading(false);
+    } else if (chatList.state === "loading") {
+      setIsPageLoading(true);
+    }
+  }, [chatList.state, chatList.contents, setChats]);
 
   useEffect(() => {
-    if (currentMessageId && currentMessageId.trim() !== "") {
+    if (currentMessage.message && currentMessage.message.trim() !== "") {
       const handleResponse = () => {
         if (singleChatMessage.state === "loading") {
-          setIsLoading(true); // Set loading state to true when fetching response
+          setIsResponseLoading(true);
         } else if (singleChatMessage.state === "hasValue") {
-          setIsLoading(false); // Set loading state to false when response is received
-          const response = singleChatMessage.contents; // Get the response from singleChatMessage
-          console.log(response);
+          setIsResponseLoading(false);
+          const response = singleChatMessage.contents;
           if (response) {
-            // Check if response is not null
-            if (Array.isArray(response)) {
-              // If response is an array of messages
-              setChats((prevChats) => [...prevChats.slice(0, -1), ...response]); // Add messages to chats
-            } else {
-              // If response is a single message
-              setChats((prevChats) => [...prevChats.slice(0, -1), response]); // Add message to chats
-            }
+            const time: number = Date.now();
+            const updatedResponse = { ...response, timestamp: time };
+            setChats((prevChats) => [
+              ...prevChats.slice(0, -1),
+              updatedResponse,
+            ]);
           }
         } else if (singleChatMessage.state === "hasError") {
-          setIsLoading(false); // Set loading state to false if there's an error
-          // Handle error if needed
+          setIsResponseLoading(false);
         }
       };
 
       handleResponse();
     }
-  }, [currentMessageId, singleChatMessage]);
+  }, [
+    currentMessage,
+    singleChatMessage.state,
+    singleChatMessage.contents,
+    setChats,
+  ]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flex: 1,
-        width: "100%",
-        height: "100%",
-        mt: 3,
-        gap: 3,
-      }}
-    >
-      {/* Sidebar */}
-      <Box
-        sx={{
-          display: { md: "flex", xs: "none", sm: "none" },
-          flex: 0.2,
-          flexDirection: "column",
-        }}
-      >
-        {/* Sidebar content */}
-
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            height: "60vh",
-            bgcolor: "rgb(17,29,39)",
-            borderRadius: 5,
-            flexDirection: "column",
-            mx: 3,
-          }}
-        >
-          <Avatar
-            sx={{
-              mx: "auto",
-              my: 2,
-              bgcolor: "white",
-              color: "black",
-              fontWeight: 700,
-            }}
-          >
-            {/* {auth?.user?.name[0]}
-            {auth?.user?.name.split(" ")[1][0]} */}
-          </Avatar>
-          <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
-            You are talking to a ChatBOT
-          </Typography>
-          <Typography sx={{ mx: "auto", fontFamily: "work sans", my: 4, p: 3 }}>
-            You can ask some questions related to Knowledge, Business, Advices,
-            Education, etc. But avoid sharing personal information
-          </Typography>
-          <Button
-            onClick={handleDeleteChats}
-            sx={{
-              width: "200px",
-              my: "auto",
-              color: "white",
-              fontWeight: "700",
-              borderRadius: 3,
-              mx: "auto",
-              bgcolor: "red[300]",
-              ":hover": {
-                bgcolor: "red.A400",
-              },
-            }}
-          >
-            Clear Conversation
-          </Button>
-        </Box>
-      </Box>
-
-      {/* Main chat area */}
-      <Box
-        sx={{
-          display: "flex",
-          flex: { md: 0.8, xs: 1, sm: 1 },
-          flexDirection: "column",
-          px: 3,
-        }}
-      >
-        {/* Chat header */}
-        <Typography
-          sx={{
-            fontSize: "40px",
-            color: "white",
-            mb: 2,
-            mx: "auto",
-            fontWeight: "600",
-          }}
-        >
-          Model - GPT 3.5 Turbo
-        </Typography>
-
-        {/* Chat messages */}
-        <Box
-          sx={{
-            width: "100%",
-            height: "60vh",
-            borderRadius: 3,
-            mx: "auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "scroll",
-            overflowX: "hidden",
-            overflowY: "auto",
-            scrollBehavior: "smooth",
-          }}
-        >
-          {chats.map((chat, index) => (
-            <ChatItem
-              message={chat.message}
-              response={chat.response}
-              key={index}
-            />
-          ))}
-        </Box>
-        <div>{isLoading ? <CircularProgress /> : ""}</div>
-
-        {/* Input field and send button */}
+    <>
+      {chats.length === 0 ? <Suggestions /> : ""}
+      <div className="relative">
+        {isProfileVisible && (
+          <>
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+            <div
+              className="fixed w-[18rem] left-1/2 top-1/2 
+          transform -translate-x-1/2 -translate-y-1/2 border p-5 
+          rounded-md bg-[#F4F4F4] z-50"
+            >
+              <ProfileSettings />
+            </div>
+          </>
+        )}
         <div
-          style={{
-            width: "100%",
-            borderRadius: 8,
-            backgroundColor: "rgb(17,27,39)",
-            display: "flex",
-            margin: "auto",
-          }}
+          className={`mt-3 scroll-m-0 ${isProfileVisible ? "blur-[4px]" : ""}`}
         >
-          <input
-            ref={inputRef}
-            placeholder="Ask anything..."
-            type="text"
-            style={{
-              width: "100%",
-              backgroundColor: "transparent",
-              padding: "30px",
-              border: "none",
-              outline: "none",
-              color: "white",
-              fontSize: "20px",
-            }}
-          />
-          <IconButton onClick={sendMessage} sx={{ color: "white", mx: 1 }}>
-            <IoMdSend />
-          </IconButton>
+          <Navbar text="Knowledge Pro!" subText="Powered by GPT 3.5" />
+          <div className="mt-[8rem] flex flex-col items-center gap-[3rem]">
+            {chats.map(({ message, response }: Message, index: number) => (
+              <div
+                key={index}
+                ref={messageEndRef}
+                className="flex w-full justify-center"
+              >
+                <div className="w-[80%]">
+                  <p className="h-fit px-5 flex justify-end">
+                    <Query text={message} />
+                  </p>
+                  <p className="mt-[10px] flex items-center gap-5 px-5">
+                    <img
+                      className="self-start w-[2.5rem] mt-2 
+                    border-[1px] rounded-full p-2"
+                      src={OpenAiImage}
+                      alt=""
+                    />
+                    {isResponseLoading && index === chats.length - 1 ? (
+                      <Typography
+                        className="min-w-[10rem] mb-[10rem]"
+                        variant="h3"
+                      >
+                        {<Skeleton />}
+                      </Typography>
+                    ) : (
+                      <Response text={response} />
+                    )}
+                  </p>
+                </div>
+              </div>
+            ))}
+            <div className="flex w-full justify-center mt-[5rem]">
+              <ChatInput
+                setCurrentMessage={setCurrentMessage}
+                setChats={setChats}
+              />
+            </div>
+          </div>
         </div>
-      </Box>
-    </Box>
+      </div>
+    </>
   );
 };
+
 export default Chat;

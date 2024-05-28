@@ -5,7 +5,7 @@ import { verifyToken } from "../utils/token.js";
 const chatRoutes = Router();
 
 // /chats/getAll
-chatRoutes.get("/getAll", verifyToken, getAllChats)
+chatRoutes.post("/getAll", verifyToken, getAllChats)
 
 // /chats/getOne
 chatRoutes.post("/getOne", verifyToken, validateMessage, getSingleChat)
