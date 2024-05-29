@@ -31,3 +31,9 @@ export type currentMessageType = {
   message: string | null,
   timestamp?: number
 }
+
+export type errorMessageType = [
+  {name?:string}?,
+  {email?:string}?,
+  {password?:string}?
+]

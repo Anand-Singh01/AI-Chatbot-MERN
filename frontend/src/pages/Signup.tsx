@@ -54,9 +54,9 @@ export const Signup = () => {
                 Harness the power of AI with Knowledge Pro. Our platform,
                 powered by the{" "}
                 <span className="text-orange-600 font-semibold">
-                  GPT-3.5 model
+                  GPT-3.5 Turbo model
                 </span>{" "}
-                API, provides instant answers to your questions.
+                provides instant answers to your questions.
               </p>
               <p>
                 Sign in now and unlock a world of knowledge at your fingertips!
