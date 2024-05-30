@@ -9,7 +9,11 @@ const app = express();
 
 //middleware
 app.use(cors({
+<<<<<<< HEAD
     origin:"http://localhost:5173/",
+=======
+    origin:'*',
+>>>>>>> 5674991a1323373066913b6f6652eae6ac07ca3a
     credentials:true
 }));
 app.use(express.json());
