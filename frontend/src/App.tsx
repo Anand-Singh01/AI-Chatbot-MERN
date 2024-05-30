@@ -7,7 +7,7 @@ import Chat from "./pages/Chat";
 import { Login } from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import { Signup } from "./pages/Signup";
-import { currentUserAtom, isLoggedInAtom } from "./store/atom";
+import { currentUserAtom, isLoggedInAtom } from "./store/user-info-atom";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);

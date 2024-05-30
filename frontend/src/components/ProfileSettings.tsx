@@ -1,53 +1,56 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { updateProfileInfo } from "../helpers/api-communicator";
-import { currentUserAtom, profileToggleAtom } from "../store/atom";
+import { profileToggleAtom } from "../store/chat-atom";
+import { currentUserAtom } from "../store/user-info-atom";
 import { updateProfileInfoType } from "../types";
 
 const ProfileSettings = () => {
   const [credentials, setCredentials] = useState<updateProfileInfoType>({
     name: "",
     currentPassword: "",
+    email: "",
     newPassword: "",
     confirmNewPassword: "",
   });
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom);
   useEffect(() => {
-    setCredentials((prev) => ({ ...prev, name: currentUser.name }));
-  }, [currentUser.name]);
+    setCredentials((prev) => ({
+      ...prev,
+      email: currentUser.email,
+      name: currentUser.name,
+    }));
+  }, [currentUser.name, currentUser.email]);
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await updateProfileInfo({credentials:credentials});
-    if(response.message === 'ok')
-    {
-      const {email, name} = response;
-      setCurrentUser({name, email});
+    const response = await updateProfileInfo({ credentials: credentials });
+    if (response.message === "ok") {
+      const { email, name } = response;
+      setCurrentUser({ name, email });
     }
   };
   const setIsProfileVisible = useSetRecoilState(profileToggleAtom);
-  const { name, currentPassword, newPassword, confirmNewPassword } =
+  const { name, email, currentPassword, newPassword, confirmNewPassword } =
     credentials;
   return (
     <div>
       <form onSubmit={submitForm} className="space-y-4 md:space-y-6" action="#">
         <div>
           <label
-            htmlFor="password"
+            htmlFor="name"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
             Name
           </label>
           <input
-            onChange={(e) =>
-              setCredentials({
-                currentPassword,
-                confirmNewPassword,
-                newPassword,
-                name: e.target.value,
-              })
-            }
-            value={name}
+            onChange={(e) => onChange(e)}
+            value={name ?? ""}
             type="text"
             name="name"
             id="name"
@@ -61,20 +64,33 @@ const ProfileSettings = () => {
 
         <div>
           <label
+            htmlFor="email"
+            className="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Email
+          </label>
+          <input
+            onChange={(e) => onChange(e)}
+            value={email ?? ""}
+            type="text"
+            name="email"
+            id="email"
+            className="bg-gray-200 border border-gray-300 text-gray-900 
+            sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
+            block w-full p-2.5"
+            disabled
+          />
+        </div>
+
+        <div>
+          <label
             htmlFor="currentPassword"
             className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Current Password
           </label>
           <input
-            onChange={(e) =>
-              setCredentials({
-                currentPassword: e.target.value,
-                confirmNewPassword,
-                newPassword,
-                name,
-              })
-            }
+            onChange={(e) => onChange(e)}
             value={currentPassword}
             type="password"
             name="currentPassword"
@@ -95,14 +111,7 @@ const ProfileSettings = () => {
             New Password
           </label>
           <input
-            onChange={(e) =>
-              setCredentials({
-                currentPassword,
-                confirmNewPassword,
-                newPassword: e.target.value,
-                name,
-              })
-            }
+            onChange={(e) => onChange(e)}
             value={newPassword}
             type="newPassword"
             name="newPassword"
@@ -123,14 +132,7 @@ const ProfileSettings = () => {
             Confirm New Password
           </label>
           <input
-            onChange={(e) =>
-              setCredentials({
-                currentPassword,
-                confirmNewPassword: e.target.value,
-                newPassword,
-                name,
-              })
-            }
+            onChange={(e) => onChange(e)}
             value={confirmNewPassword}
             type="confirmNewPassword"
             name="confirmNewPassword"

@@ -1,6 +1,6 @@
 import { useSetRecoilState } from "recoil";
 import OpenAiImage from "../assets/AI.png";
-import { chatAtom, currentMessageAtom } from "../store/atom";
+import { chatAtom, currentMessageAtom } from "../store/chat-atom";
 import { Message } from "../types";
 import SuggestionCards from "./SuggestionCards";
 const Suggestions = () => {

@@ -10,10 +10,9 @@ import { logoutUser } from "../helpers/api-communicator";
 import {
   chatAtom,
   currentMessageAtom,
-  currentUserAtom,
-  isLoggedInAtom,
   profileToggleAtom,
-} from "../store/atom";
+} from "../store/chat-atom";
+import { currentUserAtom, isLoggedInAtom } from "../store/user-info-atom";
 
 export default function ToggleMenu() {
   const navigate = useNavigate();

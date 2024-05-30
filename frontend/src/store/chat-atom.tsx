@@ -1,19 +1,11 @@
 import { atom, selector } from "recoil";
 import { getAllChats, getSingleChat } from "../helpers/api-communicator";
-import { Message, currentMessageType, currentUserStateType } from "../types";
-export const isLoggedInAtom = atom({
-  key: "isLoggedInAtomKey",
-  default: false,
-});
+import { Message, currentMessageType } from "../types";
+import { currentUserAtom, isLoggedInAtom } from "./user-info-atom";
 
 export const profileToggleAtom = atom<boolean>({
   key: "profileToggleAtomKey",
   default: false,
-});
-
-export const currentUserAtom = atom<currentUserStateType>({
-  key: "currentUserIdAtomKey",
-  default: { name: null, email: null },
 });
 
 // Define an atom to store the current message ID

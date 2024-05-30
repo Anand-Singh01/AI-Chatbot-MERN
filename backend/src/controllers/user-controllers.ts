@@ -24,7 +24,7 @@ export const userSignup = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.log(error);
     if (error.code === 11000 && error.keyPattern.email) {
-      return res.status(409).json({ msg: "user already exists" });
+      return res.status(409).json({ message: "This email is already taken" });
     } else {
       return res.status(500).json({ message: "Server error" });
     }
@@ -38,7 +38,7 @@ export const userLogin = async (req: Request, res: Response) => {
 
     // If the user does not exist, or if the password doesn't match
     if (!user || !(await compare(password, user.password))) {
-      return res.status(401).json({ msg: "Invalid username or password" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
     handleTokenAndCookie(res, user._id.toString(), user.email, "7d");
     return res.status(200).json({ message: "ok", email, name: user.name });

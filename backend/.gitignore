@@ -3,6 +3,7 @@ node_modules/
 
 # Environment variables file
 .env
+.env.production
 
 # Ignore dist directory
 dist/

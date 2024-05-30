@@ -1,16 +1,33 @@
 import axios from "axios";
-import { updateProfileInfoType } from "../types";
+import { response, updateProfileInfoType } from "../types";
 
 export const loginUser = async (email: string, password: string) => {
   try {
     const res = await axios.post("/user/login", { email, password });
-    if (res.status !== 200) {
-      throw new Error("unable to login");
-    }
-    const data = await res.data;
-    return data;
+    const { status } = res;
+    const data: response = await res.data;
+    return { ...data, status };
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error) && error.response) {
+      return { ...error.response.data, status: error.response.status };
+    }
+  }
+};
+
+export const signupUser = async (
+  email: string,
+  password: string,
+  name: string
+) => {
+  try {
+    const res = await axios.post("/user/signup", { email, password, name });
+    const { status } = res;
+    const data: response = await res.data;
+    return { ...data, status };
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return { ...error.response.data, status: error.response.status };
+    }
   }
 };
 
@@ -32,23 +49,6 @@ export const updateProfileInfo = async ({
       throw new Error("unable to signup");
     }
     const data = await response.data;
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const signupUser = async (
-  email: string,
-  password: string,
-  name: string
-) => {
-  try {
-    const res = await axios.post("/user/signup", { email, password, name });
-    if (res.status !== 200) {
-      throw new Error("unable to signup");
-    }
-    const data = await res.data;
     return data;
   } catch (error) {
     console.log(error);
@@ -94,9 +94,9 @@ export const getSingleChat = async (message: string | null) => {
   }
 };
 
-export const getAllChats = async (email : string | null) => {
+export const getAllChats = async (email: string | null) => {
   try {
-    const res = await axios.post("/chats/getAll", {email});
+    const res = await axios.post("/chats/getAll", { email });
     if (res.status !== 200) {
       throw new Error("Error fetching chats");
     }

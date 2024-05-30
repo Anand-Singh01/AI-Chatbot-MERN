@@ -16,7 +16,7 @@ import {
   currentMessageAtom,
   profileToggleAtom,
   singleChatSelector,
-} from "../store/atom";
+} from "../store/chat-atom";
 import { Message } from "../types";
 
 const Chat = () => {
