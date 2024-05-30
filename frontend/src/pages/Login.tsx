@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import galaxySmall from "../assets/galaxy-small.jpg";
@@ -36,31 +36,31 @@ export const Login = () => {
     setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setIsAlert(false);
   };
-  const submitLoginForm = async (e?: React.FormEvent<HTMLFormElement>) => {
+  const submitLoginForm = useCallback(async (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
     }
     const result = loginValidation({ email, password });
-    if (result.length != 0) {
+    if (result.length !== 0) {
       setErrors(result);
     } else {
       const data = await loginUser(email, password);
       if (data.status === 200) {
         setCurrentUserAtom({ name: data.name, email: data.email });
         setIsLoggedIn(true);
-        navigate("/chat");
+        navigate('/chat');
       } else {
         setIsAlert(true);
         const time = Date.now();
         setCurrentAlert({
           message: data.message,
-          page: "login",
+          page: 'login',
           severity: alertType.error,
           timestamp: time,
         });
       }
     }
-  };
+  }, [email, password, setCurrentUserAtom, setIsAlert, setIsLoggedIn, setCurrentAlert, navigate]);
 
   useEffect(() => {
     setIsAlert(false);
@@ -78,7 +78,7 @@ export const Login = () => {
         password: "",
       });
     }
-  }, [credentials, isGuest]);
+  }, [credentials, isGuest, submitLoginForm]);
 
   return (
     <div className="relative">
