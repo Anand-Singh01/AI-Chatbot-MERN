@@ -7,7 +7,7 @@ export default defineConfig({
   ],
   build: {
     sourcemap: false,  // Enable source maps for easier debugging
-    minify: 'terser',  // Use terser for minification
+    // minify: 'terser',  // Use terser for minification
     terserOptions: {
       compress: {
         drop_console: true,
