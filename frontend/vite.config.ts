@@ -6,7 +6,7 @@ export default defineConfig({
     react(),
   ],
   build: {
-    sourcemap: true,  // Enable source maps for easier debugging
+    sourcemap: false,  // Enable source maps for easier debugging
     minify: 'terser',  // Use terser for minification
     terserOptions: {
       compress: {
