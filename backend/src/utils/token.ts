@@ -23,7 +23,9 @@ export const handleTokenAndCookie = (
   res.cookie(COOKIE_NAME, token, {
     path: "/",
     expires,
+    sameSite: 'none',
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     signed: true,
   });
 };
