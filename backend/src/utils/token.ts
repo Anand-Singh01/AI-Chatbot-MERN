@@ -10,7 +10,7 @@ export const createToken = (id: string, email: string, expiresIn: string) => {
 
 export const handleTokenAndCookie = (res : Response, id : string, email : string, expiresIn: string)=>
 {
-    res.clearCookie(COOKIE_NAME, {path:"/", domain:"localhost", httpOnly:true, signed:true});
+    res.clearCookie(COOKIE_NAME, {path:"/", domain:"netlify.app", httpOnly:true, signed:true});
     const token = createToken(id, email, expiresIn);
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
