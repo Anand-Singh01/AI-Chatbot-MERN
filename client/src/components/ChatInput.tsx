@@ -1,3 +1,4 @@
+// This component displays users queries, without waiting for response
 import { useState } from "react";
 import { Message, currentMessageType } from "../types";
 
@@ -6,6 +7,9 @@ interface ChatInputProps {
   setChats: (updateFn: (prevChats: Message[]) => Message[]) => void;
 }
 
+// Takes query sent by user and list of current chats as an input.
+// Adds a new query while keeping the response empty
+// Sets query back to "" for better user experience.
 export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
   const [query, setQuery] = useState("");
   const submitQuery = () => {
@@ -23,7 +27,10 @@ export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
     }
   };
 
+  //cleans query
   const message = query.trim() === "";
+
+  //style for send query button
   const baseButtonStyle =
     "inline-flex justify-center items-center p-2 rounded-full cursor-pointer";
   const enabledButtonStyle = "text-blue-500 hover:bg-blue-100";
@@ -37,6 +44,7 @@ export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
         </label>
         <div className="relative">
           <div className="flex items-center px-3 mb-5 py-2 rounded-lg bg-[#F4F4F4]">
+            {/* Send query on enter key press */}
             <textarea
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !message) {
@@ -53,6 +61,7 @@ export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
               placeholder="Your message..."
             ></textarea>
             <button
+              // Making sure that user is unable to send empty query
               disabled={message}
               onClick={submitQuery}
               type="submit"

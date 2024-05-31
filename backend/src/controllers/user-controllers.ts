@@ -91,8 +91,9 @@ export const userLogout = async (req: Request, res: Response) => {
 
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
       signed: true,
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
       path: "/",
     });
 

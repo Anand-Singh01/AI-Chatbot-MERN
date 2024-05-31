@@ -1,3 +1,4 @@
+// Shows query suggestions
 import { useSetRecoilState } from "recoil";
 import OpenAiImage from "../assets/AI.png";
 import { chatAtom, currentMessageAtom } from "../store/chat-atom";
@@ -36,8 +37,12 @@ const Suggestions = () => {
       <div className="flex md:flex-row flex-col gap-3 mx-3">
         {queries.map(({ q }, key) => {
           return (
-            <div className="cursor-pointer" onClick={() => submitQuery(q)}>
-              <SuggestionCards text={q} key={key} />
+            <div
+              key={key}
+              className="cursor-pointer"
+              onClick={() => submitQuery(q)}
+            >
+              <SuggestionCards text={q} />
             </div>
           );
         })}

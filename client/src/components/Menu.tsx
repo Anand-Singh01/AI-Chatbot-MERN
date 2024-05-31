@@ -1,3 +1,4 @@
+// Menu component for logout and show profile features.
 import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
 import { Menu } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -5,19 +6,19 @@ import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { logoutUser } from "../helpers/api-communicator";
 import {
   chatAtom,
-  currentMessageAtom,
-  profileToggleAtom,
+  currentMessageAtom
 } from "../store/chat-atom";
 import { currentUserAtom, isLoggedInAtom } from "../store/user-info-atom";
 
 export default function ToggleMenu() {
   const navigate = useNavigate();
-  const setIsProfileVisible = useSetRecoilState(profileToggleAtom);
+  // const setIsProfileVisible = useSetRecoilState(profileToggleAtom);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const currentUser = useRecoilValue(currentUserAtom);
   const resetChat = useResetRecoilState(chatAtom);
   const resetCurrentUserAtom = useResetRecoilState(currentUserAtom);
   const resetCurrentMessageAtom = useResetRecoilState(currentMessageAtom);
@@ -26,11 +27,13 @@ export default function ToggleMenu() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const openProfile = () => {
-    setAnchorEl(null);
-    setIsProfileVisible(true);
-  };
+  // const openProfile = () => {
+  //   setAnchorEl(null);
+  //   setIsProfileVisible(true);
+  // };
 
+  //Clean up all atoms and redirect user to '/login'
+  //If user is logged in as a guest then also works the same.
   const logout = async () => {
     setAnchorEl(null);
     const response = await logoutUser();
@@ -67,8 +70,15 @@ export default function ToggleMenu() {
         onClose={() => setAnchorEl(null)}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={openProfile}>Profile</MenuItem>
-        <MenuItem onClick={logout}>Logout</MenuItem>
+        {/* <MenuItem onClick={openProfile}>Profile</MenuItem> */}
+        
+        {/* User will see login button if they haven't logged in - vice versa */}
+        <MenuItem onClick={logout}>
+          {!currentUser.email ||
+          currentUser.email === process.env.REACT_APP_GUEST_EMAIL
+            ? "Login"
+            : "Logout"}
+        </MenuItem>
       </Menu>
     </div>
   );

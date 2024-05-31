@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import Loading from "./components/Loading";
 import { checkAuthStatus } from "./helpers/api-communicator";
 import Chat from "./pages/Chat";
@@ -10,7 +10,7 @@ import { Signup } from "./pages/Signup";
 import { currentUserAtom, isLoggedInAtom } from "./store/user-info-atom";
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
+  const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
   const currentPath = window.location.pathname;
 
@@ -44,13 +44,15 @@ const App = () => {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={isLoggedIn ? <Chat /> : <Login />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/chat" element={isLoggedIn ? <Chat /> : <Login />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Chat />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 };
 

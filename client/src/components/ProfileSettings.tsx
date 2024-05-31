@@ -1,3 +1,4 @@
+//This component contains logic to change profile info of user.
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { updateProfileInfo } from "../helpers/api-communicator";

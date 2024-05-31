@@ -104,25 +104,28 @@ const Chat = () => {
         >
           <Navbar text="Knowledge Pro!" subText="Powered by GPT 3.5" />
           <div className="mt-[8rem] flex flex-col items-center gap-[3rem]">
-            {chats.map(({ message, response }: Message, index: number) => (
+            {chats.map(({ message, response }: Message, key) => (
               <div
-                key={index}
+                key={key}
                 ref={messageEndRef}
                 className="flex w-full justify-center"
               >
                 <div className="w-[80%]">
-                  <p className="h-fit px-5 flex justify-end">
+                  {/* changed to p ---> div */}
+                  <div className="h-fit px-5 flex justify-end">
                     <Query text={message} />
-                  </p>
-                  <p className="mt-[10px] flex items-center gap-5 px-5">
+                  </div>
+                  {/* changed p ---> div */}
+                  <div className="mt-[10px] flex items-center gap-5 px-5">
                     <img
                       className="self-start w-[2.5rem] mt-2 
                     border-[1px] rounded-full p-2"
                       src={OpenAiImage}
                       alt=""
                     />
-                    {isResponseLoading && index === chats.length - 1 ? (
+                    {isResponseLoading && key === chats.length - 1 ? (
                       <Typography
+                        component={'span'}
                         className="min-w-[10rem] mb-[10rem]"
                         variant="h3"
                       >
@@ -131,7 +134,7 @@ const Chat = () => {
                     ) : (
                       <Response text={response} />
                     )}
-                  </p>
+                  </div>
                 </div>
               </div>
             ))}

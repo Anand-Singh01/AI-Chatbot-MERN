@@ -1,3 +1,4 @@
+//Displays response fetched from Open AI's API.
 import React from "react";
 // import openAiImage from "../assets/AI.png";
 interface response {

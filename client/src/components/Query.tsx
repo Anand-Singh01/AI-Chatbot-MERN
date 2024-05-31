@@ -1,3 +1,4 @@
+//Query asked by user
 import React from "react";
 
 interface query {

@@ -1,3 +1,4 @@
+//Client side validation for login / signup / profile page
 import { LoginUserType, SignupUserType, errorMessageType } from "../types";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

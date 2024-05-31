@@ -1,3 +1,4 @@
+// Contains Functions to connect to Express Server
 import axios from "axios";
 import { response, updateProfileInfoType } from "../types";
 
