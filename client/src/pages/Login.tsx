@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { useCallback, useEffect, useState } from "react";
-=======
-import { useEffect, useState } from "react";
->>>>>>> cc8e8948892bd1d4f3fbb78202aa0c08716c7267
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import galaxySmall from "../assets/galaxy-small.jpg";
@@ -42,7 +38,6 @@ export const Login = () => {
     setIsAlert(false);
   };
 
-<<<<<<< HEAD
   const submitLoginForm = useCallback(
 
     async (e?: React.FormEvent<HTMLFormElement>) => {
@@ -72,33 +67,6 @@ export const Login = () => {
     }, [email, navigate, password, setCurrentAlert, setCurrentUserAtom, setIsAlert, setIsLoggedIn ]
 
   )
-=======
-  const submitLoginForm = async (e?: React.FormEvent<HTMLFormElement>) => {
-    if (e) {
-      e.preventDefault();
-    }
-    const result = loginValidation({ email, password });
-    if (result.length !== 0) {
-      setErrors(result);
-    } else {
-      const data = await loginUser(email, password);
-      if (data.status === 200) {
-        setCurrentUserAtom({ name: data.name, email: data.email });
-        setIsLoggedIn(true);
-        navigate("/chat");
-      } else {
-        setIsAlert(true);
-        const time = Date.now();
-        setCurrentAlert({
-          message: data.message,
-          page: "login",
-          severity: alertType.error,
-          timestamp: time,
-        });
-      }
-    }
-  };
->>>>>>> cc8e8948892bd1d4f3fbb78202aa0c08716c7267
 
   useEffect(() => {
     setIsAlert(false);
@@ -116,11 +84,7 @@ export const Login = () => {
         password: "",
       });
     }
-<<<<<<< HEAD
   }, [credentials, isGuest, submitLoginForm]);
-=======
-  }, [credentials, isGuest]);
->>>>>>> cc8e8948892bd1d4f3fbb78202aa0c08716c7267
 
   return (
     <div className="relative">
