@@ -13,8 +13,8 @@ const BlurImage = ({ src, placeholder }: blurEffect) => {
   
   return (
     <div className="image-container">
-      <img src={placeholder} className={`image ${loaded ? 'image-hidden' : 'image-blur'}`} alt="" />
-      <img src={src} className={`image ${loaded ? 'image-shown' : 'image-hidden'}`} onLoad={handleImageLoad} alt="" />
+      <img loading="lazy" src={placeholder} className={`image ${loaded ? 'image-hidden' : 'image-blur'}`} alt="" />
+      <img loading="lazy" src={src} className={`image ${loaded ? 'image-shown' : 'image-hidden'}`} onLoad={handleImageLoad} alt="" />
     </div>
   );
 };
