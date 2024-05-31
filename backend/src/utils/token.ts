@@ -14,7 +14,7 @@ export const handleTokenAndCookie = (res : Response, id : string, email : string
     const token = createToken(id, email, expiresIn);
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
-    res.cookie(COOKIE_NAME, token, {path:"/", domain:"localhost", expires, httpOnly:true, signed:true});
+    res.cookie(COOKIE_NAME, token, {path:"/", domain:"netlify.app", expires, httpOnly:true, signed:true});
 }
 
 export const verifyToken = (req: Request, res: Response, next:NextFunction)=>
