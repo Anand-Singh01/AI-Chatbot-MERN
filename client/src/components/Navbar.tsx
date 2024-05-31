@@ -15,7 +15,7 @@ const Navbar: React.FC<Navprops> = ({ text, subText }) => {
           <p className="font-semibold px-5 text-blue-800">{text}</p>
           <p
             className="text-[0.8rem] rounded-lg px-1 
-          font-semibold text-gray-400 absolute 
+          font-semibold text-gray-700 absolute 
           top-[-0.5rem] left-[8.5rem]  w-[8.3rem]"
           >
             {subText}

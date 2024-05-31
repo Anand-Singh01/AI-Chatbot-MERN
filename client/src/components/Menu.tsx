@@ -54,6 +54,8 @@ export default function ToggleMenu() {
         }}
         id="fade-button"
         aria-controls={open ? "fade-menu" : undefined}
+        aria-label="Open Menu"
+        tabIndex={0}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
