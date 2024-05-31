@@ -16,16 +16,22 @@ export const handleTokenAndCookie = (
   email: string,
   expiresIn: string
 ) => {
-  res.clearCookie(COOKIE_NAME, { path: "/", httpOnly: true, signed: true });
+  res.clearCookie(COOKIE_NAME, {
+    path: "/",
+    sameSite: "none",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    signed: true,
+  });
   const token = createToken(id, email, expiresIn);
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
   res.cookie(COOKIE_NAME, token, {
     path: "/",
     expires,
-    sameSite: 'none',
+    sameSite: "none",
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
     signed: true,
   });
 };
