@@ -19,13 +19,13 @@ const Suggestions = () => {
   };
   const queries = [
     {
-      q: "Tell me a pun about outer space.",
+      q: "Tell me a pun about a chicken in outer space.",
     },
     {
-      q: "Write a short story on oranges",
+      q: "Write a short story on oranges and apples",
     },
     {
-      q: "Let’s play Tic tac Toe.",
+      q: "Tell me a random fact, but make it weird!",
     },
   ];
   return (

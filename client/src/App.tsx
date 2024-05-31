@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Loading from "./components/Loading";
 import { checkAuthStatus } from "./helpers/api-communicator";
@@ -13,9 +13,9 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const setCurrentUserAtom = useSetRecoilState(currentUserAtom);
   const currentPath = window.location.pathname;
-  
+
   useEffect(() => {
-    if (currentPath === "/chat") {
+    if (currentPath === "/chat" || currentPath === "/") {
       checkStatus();
     } else {
       setIsLoading(false);
@@ -37,7 +37,7 @@ const App = () => {
         setIsLoading(false);
       }
     }
-  }, [currentPath, setCurrentUserAtom, setIsLoggedIn]); // Remove chat from dependencies
+  }, [currentPath, setCurrentUserAtom, setIsLoggedIn]);
 
   if (isLoading) {
     return <Loading />;
@@ -45,13 +45,10 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={isLoggedIn ? <Chat /> : <Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route
-        path="/chat"
-        element={isLoggedIn ? <Chat /> : <Navigate to={"/login"} replace />}
-      />
+      <Route path="/chat" element={isLoggedIn ? <Chat /> : <Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
