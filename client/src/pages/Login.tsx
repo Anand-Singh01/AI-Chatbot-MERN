@@ -182,7 +182,7 @@ export const Login = () => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                      className="sign-in"
                     >
                       Sign in
                     </button>
@@ -190,7 +190,7 @@ export const Login = () => {
                     <button
                       onClick={fillGuestCredentials}
                       type="button"
-                      className="bg-gray-900 w-full text-white font-bold py-2 px-4 rounded animate-glow"
+                      className="guest-btn"
                     >
                       Explore as Guest
                     </button>

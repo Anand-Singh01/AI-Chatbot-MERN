@@ -8,10 +8,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { logoutUser } from "../helpers/api-communicator";
-import {
-  chatAtom,
-  currentMessageAtom
-} from "../store/chat-atom";
+import { chatAtom, currentMessageAtom } from "../store/chat-atom";
 import { currentUserAtom, isLoggedInAtom } from "../store/user-info-atom";
 
 export default function ToggleMenu() {
@@ -73,14 +70,9 @@ export default function ToggleMenu() {
         TransitionComponent={Fade}
       >
         {/* <MenuItem onClick={openProfile}>Profile</MenuItem> */}
-        
+
         {/* User will see login button if they haven't logged in - vice versa */}
-        <MenuItem onClick={logout}>
-          {!currentUser.email ||
-          currentUser.email === process.env.REACT_APP_GUEST_EMAIL
-            ? "Login"
-            : "Logout"}
-        </MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
     </div>
   );

@@ -53,7 +53,6 @@ const Section = ({ startNewSection_click }: { startNewSection_click: () => void 
     if (sectionList.state === "loading") {
       // setIsLoading(true);
     } else if (sectionList.state === "hasValue") {
-      console.log(sectionList.contents);
       setSections(sectionList.contents);
       // setIsLoading(false);
     }

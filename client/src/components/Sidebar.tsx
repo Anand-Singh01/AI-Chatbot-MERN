@@ -1,12 +1,11 @@
-import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { logoutUser } from "../helpers/api-communicator";
 import { chatAtom, currentMessageAtom } from "../store/chat-atom";
 import {
+  currentSectionAtom,
   isNewSectionAtom,
-  updateSectionListAtom,
 } from "../store/section-atoms";
 import { currentUserAtom, isLoggedInAtom } from "../store/user-info-atom";
 import Section from "./Section";
@@ -18,6 +17,7 @@ const SideBar = ({
   bg_disabled: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const setCurrentSection = useSetRecoilState(currentSectionAtom);
   const setChats = useSetRecoilState(chatAtom);
   const setIsNewSection = useSetRecoilState(isNewSectionAtom);
   const currentUser = useRecoilValue(currentUserAtom);
@@ -25,7 +25,7 @@ const SideBar = ({
   const resetCurrentUserAtom = useResetRecoilState(currentUserAtom);
   const resetCurrentMessageAtom = useResetRecoilState(currentMessageAtom);
   const resetIsLoggedInAtom = useResetRecoilState(isLoggedInAtom);
-  const setUpdateSectionList = useSetRecoilState(updateSectionListAtom);
+  // const setUpdateSectionList = useSetRecoilState(updateSectionListAtom);
   const navigate = useNavigate();
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -50,9 +50,14 @@ const SideBar = ({
   };
 
   const startNewSection_click = () => {
-    setChats([]);
+    setCurrentSection({
+      sectionName: "",
+      createdAt: "",
+      _id: null,
+    });
     setIsNewSection(true);
-    setUpdateSectionList(false);
+    setChats([]);
+    // setUpdateSectionList(false);
     set_bg_disabled(false);
     toggleSidebar();
   };
@@ -95,9 +100,10 @@ const SideBar = ({
         <div
           onClick={startNewSection_click}
           title="New Chat"
-          className="flex justify-end mt-[1.1rem]"
+          className="flex justify-end mt-[1rem]"
         >
-          <AddTwoToneIcon className="new-chat" />
+          <button className="newChat-btn w-[50%]">New Chat</button>
+          {/* <AddTwoToneIcon className="new-chat" /> */}
         </div>
 
         <div>

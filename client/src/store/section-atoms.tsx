@@ -2,6 +2,7 @@ import { atom, selector } from "recoil";
 import { getSectionList } from "../helpers/api-communicator";
 import { sectionData, sectionType } from "../types";
 import { currentUserAtom, isLoggedInAtom } from "./user-info-atom";
+
 export const currentSectionAtom = atom<sectionType>({
   key: "currentSectionAtomKey",
   default: {
@@ -21,10 +22,10 @@ export const sectionUpdateAtom = atom<string>({
   default: "",
 });
 
-export const updateSectionListAtom = atom<boolean>({
-  key: "updateSectionListAtom",
-  default: false,
-});
+// export const updateSectionListAtom = atom<boolean>({
+//   key: "updateSectionListAtom",
+//   default: false,
+// });
 
 export const isNewSectionAtom = atom<boolean>({
   key: "isNewSectionAtom",
@@ -40,11 +41,12 @@ export const sectionListSelector = selector<sectionData>({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const currSection = get(currentSectionAtom);
     const sectionNameUpdate = get(sectionUpdateAtom);
-    const isNewSection = get(isNewSectionAtom);
+    // const isNewSection = get(isNewSectionAtom);
     if (email === process.env.REACT_APP_GUEST_EMAIL) {
       return { chatSections: {} };
     }
-    if ((email && isLoggedIn) || !isNewSection || sectionNameUpdate) {
+    // console.log(isNewSection);
+    if ((email && isLoggedIn) || sectionNameUpdate) {
       try {
         const categories = await getSectionList();
         return categories;

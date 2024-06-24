@@ -25,7 +25,7 @@ import {
 import {
   currentSectionAtom,
   isNewSectionAtom,
-  updateSectionListAtom,
+  sectionUpdateAtom,
 } from "../store/section-atoms";
 import { currentUserAtom } from "../store/user-info-atom";
 import { Message } from "../types";
@@ -40,7 +40,8 @@ const Chat = () => {
     useRecoilState(currentMessageAtom);
   const singleChatMessage = useRecoilValueLoadable(singleChatSelector);
   const [isNewSection, setIsNewSection] = useRecoilState(isNewSectionAtom);
-  const setUpdateSectionList = useSetRecoilState(updateSectionListAtom);
+  const setSectionUpdate = useSetRecoilState(sectionUpdateAtom);
+  // const setUpdateSectionList = useSetRecoilState(updateSectionListAtom);
   const setCurrentSection = useSetRecoilState(currentSectionAtom);
   const [isLoading, setIsPageLoading] = useState(true);
   const [isResponseLoading, setIsResponseLoading] = useState(false);
@@ -87,8 +88,9 @@ const Chat = () => {
               createdAt: response?.createdAt,
               sectionName: response!.sectionName!,
             });
-            setUpdateSectionList(true);
+            setSectionUpdate((new Date()).toString());
             setIsNewSection(false);
+            // setUpdateSectionList(true);
           }
           // setUpdateSectionList(false);
         } else if (singleChatMessage.state === "hasError") {
@@ -102,7 +104,7 @@ const Chat = () => {
   }, [
     currentMessage,
     isNewSection,
-    setUpdateSectionList,
+    // setUpdateSectionList,
     setIsNewSection,
     currentUser.email,
     singleChatMessage.state,

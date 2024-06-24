@@ -36,7 +36,6 @@ export const updateSectionName = async (
   try {
     const { sectionId, newName } = req.body;
     const section = await Section.findById(sectionId);
-    console.log(section);
     if (section) {
       await Section.updateOne(
         { _id: section._id },
