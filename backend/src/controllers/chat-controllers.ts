@@ -8,6 +8,26 @@ import OpenAI from "openai";
 import { configureOpenAi } from "../config/openai-config.js";
 import { Chat, Section, User } from "../models/User.js";
 
+export const deleteSection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { sectionId } = req.body;
+    const section = await Section.findById(sectionId);
+    if (section) {
+      await section.deleteOne({ _id: section._id });
+      await Chat.deleteMany({ section: section._id });
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(404).json({ msg: "section not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 export const updateSectionName = async (
   req: Request,
   res: Response,

@@ -16,10 +16,10 @@ export const sectionListAtom = atom<sectionData>({
   default: { chatSections: {} },
 });
 
-export const sectionNameUpdateAtom = atom<string>({
-  key:"sectionNameUpdateAtomKey",
-  default:""
-})
+export const sectionUpdateAtom = atom<string>({
+  key: "sectionNameUpdateAtomKey",
+  default: "",
+});
 
 export const updateSectionListAtom = atom<boolean>({
   key: "updateSectionListAtom",
@@ -38,17 +38,13 @@ export const sectionListSelector = selector<sectionData>({
     const { email } = get(currentUserAtom);
     // const updateSectionList = get(updateSectionListAtom);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const currSection = get(currentSectionAtom);
-    const sectionNameUpdate = get(sectionNameUpdateAtom);
+    // const currSection = get(currentSectionAtom);
+    const sectionNameUpdate = get(sectionUpdateAtom);
     const isNewSection = get(isNewSectionAtom);
-    if(email === process.env.REACT_APP_GUEST_EMAIL)
-    {
+    if (email === process.env.REACT_APP_GUEST_EMAIL) {
       return { chatSections: {} };
     }
-    if (
-      (email && isLoggedIn) ||
-      isNewSection || sectionNameUpdate
-    ) {
+    if ((email && isLoggedIn) || !isNewSection || sectionNameUpdate) {
       try {
         const categories = await getSectionList();
         return categories;

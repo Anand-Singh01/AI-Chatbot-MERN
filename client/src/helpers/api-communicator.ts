@@ -152,3 +152,18 @@ export const updateSectionName = async (
     return null;
   }
 };
+
+export const deleteSection = async (sectionId: string) => {
+  try {
+    const res = await axios.post("/chats/deleteSection", {
+      sectionId,
+    });
+    if (res.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    return { success: false };
+  }
+};

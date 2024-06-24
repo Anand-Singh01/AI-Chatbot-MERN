@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    deleteSection,
     getAllChats,
     getCategories,
     getSingleChat,
@@ -20,5 +21,8 @@ chatRoutes.post("/getCategories", verifyToken, getCategories);
 
 // /chats/updateSectionName
 chatRoutes.post("/updateSectionName", verifyToken, updateSectionName);
+
+// /chats/deleteSection
+chatRoutes.post("/deleteSection", verifyToken, deleteSection);
 
 export default chatRoutes;

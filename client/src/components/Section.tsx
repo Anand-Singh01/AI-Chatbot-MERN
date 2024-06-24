@@ -10,18 +10,18 @@ import {
   isNewSectionAtom,
   sectionListAtom,
   sectionListSelector,
-  sectionNameUpdateAtom,
+  sectionUpdateAtom,
 } from "../store/section-atoms";
 import { sectionType } from "../types";
 import Dropdown from "./Dropdown";
 
-const Section = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+const Section = ({ startNewSection_click }: { startNewSection_click: () => void }) => {
   const sectionList = useRecoilValueLoadable(sectionListSelector);
   const [sections, setSections] = useRecoilState(sectionListAtom);
   const [currSection, setCurrentSection] = useRecoilState(currentSectionAtom);
   const [editingSection, setEditingSection] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
-  const setSectionNameUpdate = useSetRecoilState(sectionNameUpdateAtom);
+  const setSectionNameUpdate = useSetRecoilState(sectionUpdateAtom);
   const [selectedSectionName, setSelectedSectionName] = useState("");
   const isNewSection = useSetRecoilState(isNewSectionAtom);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -134,6 +134,7 @@ const Section = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
                     </div>
                     {item._id === currSection._id && (
                       <Dropdown
+                      startNewSection_click={startNewSection_click}
                         _id={item._id!}
                         setEditingSection={setEditingSection}
                       />

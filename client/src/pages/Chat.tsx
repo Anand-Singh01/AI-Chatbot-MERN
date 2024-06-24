@@ -88,6 +88,7 @@ const Chat = () => {
               sectionName: response!.sectionName!,
             });
             setUpdateSectionList(true);
+            setIsNewSection(false);
           }
           // setUpdateSectionList(false);
         } else if (singleChatMessage.state === "hasError") {

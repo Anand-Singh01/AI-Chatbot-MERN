@@ -101,7 +101,7 @@ const SideBar = ({
         </div>
 
         <div>
-          <Section toggleSidebar={toggleSidebar} />
+          <Section startNewSection_click={startNewSection_click} />
         </div>
 
         <div className="relative">
