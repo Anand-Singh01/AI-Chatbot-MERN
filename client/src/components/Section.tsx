@@ -84,62 +84,66 @@ const Section = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   };
 
   return (
-    <div className="h-screen mt-10 overflow-y-auto">
-      {Object.keys(sections.chatSections).length !== 0 &&
-        Object.keys(sections.chatSections).map((sectionKey, index) => (
-          <div className="m-2 cursor-pointer" key={index}>
-            <h3 className="key-heading">{sectionKey}</h3>
-            {sections.chatSections[sectionKey]?.map(
-              (item: sectionType, index: number) => (
-                <div className="flex items-center w-[15rem]">
-                  <div
-                    className="hover:bg-gray-100 rounded-lg w-full"
-                    onClick={() =>
-                      sectionOnClick(
-                        item._id,
-                        item.createdAt!,
-                        item.sectionName
-                      )
-                    }
-                    key={index}
-                  >
-                    {editingSection === item._id ? (
-                      <input
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            handleSectionNameUpdate();
+    <div className=" h-screen mt-10">
+      <div className="h-[85%] overflow-y-auto">
+        {Object.keys(sections.chatSections).length !== 0 &&
+          Object.keys(sections.chatSections).map((sectionKey, index) => (
+            <div className="m-2 cursor-pointer" key={index}>
+              <h3 className="key-heading">{sectionKey}</h3>
+              {sections.chatSections[sectionKey]?.map(
+                (item: sectionType, index: number) => (
+                  <div className="flex items-center w-[15rem]">
+                    <div
+                      className="hover:bg-gray-100 rounded-lg w-full"
+                      onClick={() =>
+                        sectionOnClick(
+                          item._id,
+                          item.createdAt!,
+                          item.sectionName
+                        )
+                      }
+                      key={index}
+                    >
+                      {editingSection === item._id ? (
+                        <input
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              handleSectionNameUpdate();
+                            }
+                          }}
+                          ref={inputRef}
+                          type="text"
+                          className="pl-2"
+                          value={selectedSectionName}
+                          onChange={(e) =>
+                            setSelectedSectionName(e.target.value)
                           }
-                        }}
-                        ref={inputRef}
-                        type="text"
-                        className="pl-2"
-                        value={selectedSectionName}
-                        onChange={(e) => setSelectedSectionName(e.target.value)}
+                        />
+                      ) : (
+                        <p
+                          className={`${
+                            item._id === currSection._id
+                              ? "selected-section-bg"
+                              : ""
+                          } p-2`}
+                        >
+                          {item.sectionName}
+                        </p>
+                      )}
+                    </div>
+                    {item._id === currSection._id && (
+                      <Dropdown
+                        _id={item._id!}
+                        setEditingSection={setEditingSection}
                       />
-                    ) : (
-                      <p
-                        className={`${
-                          item._id === currSection._id
-                            ? "selected-section-bg"
-                            : ""
-                        } p-2`}
-                      >
-                        {item.sectionName}
-                      </p>
                     )}
                   </div>
-                  {item._id === currSection._id && (
-                    <Dropdown
-                      _id={item._id!}
-                      setEditingSection={setEditingSection}
-                    />
-                  )}
-                </div>
-              )
-            )}
-          </div>
-        ))}
+                )
+              )}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
