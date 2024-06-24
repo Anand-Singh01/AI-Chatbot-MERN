@@ -124,7 +124,6 @@ export const getSectionList = async (): Promise<sectionData> => {
       throw new Error("Error fetching chats");
     }
     const data = await res.data;
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
