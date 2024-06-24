@@ -106,7 +106,7 @@ const SideBar = ({
 
         <div className="relative">
           {currentUser.email === process.env.REACT_APP_GUEST_EMAIL ? (
-            <div className="absolute top-[-13rem] right-[2.3rem]">
+            <div className="absolute top-[-15rem] right-[2.3rem]">
               <div className="flex flex-col">
                 <Link to={"/login"} type="button" className="sidebar-btn-login">
                   Login
