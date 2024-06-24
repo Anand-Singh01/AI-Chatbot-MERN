@@ -39,7 +39,6 @@ export const Login = () => {
   };
 
   const submitLoginForm = useCallback(
-
     async (e?: React.FormEvent<HTMLFormElement>) => {
       if (e) {
         e.preventDefault();
@@ -49,7 +48,7 @@ export const Login = () => {
         setErrors(result);
       } else {
         const data = await loginUser(email, password);
-        if (data.status === 200) {
+        if (data && data.status === 200) {
           setCurrentUserAtom({ name: data.name, email: data.email });
           setIsLoggedIn(true);
           navigate("/chat");
@@ -64,9 +63,17 @@ export const Login = () => {
           });
         }
       }
-    }, [email, navigate, password, setCurrentAlert, setCurrentUserAtom, setIsAlert, setIsLoggedIn ]
-
-  )
+    },
+    [
+      email,
+      navigate,
+      password,
+      setCurrentAlert,
+      setCurrentUserAtom,
+      setIsAlert,
+      setIsLoggedIn,
+    ]
+  );
 
   useEffect(() => {
     setIsAlert(false);
@@ -88,16 +95,16 @@ export const Login = () => {
 
   return (
     <div className="relative">
-      <div className="absolute w-full top-0 z-50">
+      <div className="alert-div">
         {isAlert && currentAlert.page === "login" ? <ShowAlert /> : ""}
       </div>
-      <div className="relative bg-orange-400 h-screen flex justify-center items-center">
-        <div className="absolute bg-cover flex justify-center items-center h-[100%] w-[100%] bg-orange-200">
+      <div className="login-main-div">
+        <div className="blur-image-main-div">
           <BlurImage src={galaxy} placeholder={galaxySmall} />
         </div>
-        <div className="md:flex parent-container drop-shadow-2xl rounded-xl items-center md:h-[75%] md:w-[800px] bg-white">
-          <section className="hidden md:flex md:w-1/2 h-[100%] text-white rounded-tl-xl rounded-bl-xl bg-[#A4C5B5]">
-            <div className="h-full mx-[1rem] text-center flex justify-center items-center">
+        <div className="login-card-main-div">
+          <section className="login-intro-card">
+            <div className="login-intro-inner-card">
               <div className="flex flex-col gap-3">
                 <h2 className="text-xl font-bold">
                   Welcome to{" "}

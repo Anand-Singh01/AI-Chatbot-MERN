@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Blur image effect */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease-in-out;
+  object-fit: cover;
+}
+.image-hidden {
+  opacity: 0;
+}
+.image-shown {
+  opacity: 1;
+}
+.image-blur {
+  filter: blur(20px);
+  transition: filter 0.5s ease-in-out;
+}
+
+/* chatInput.tsx */
+.baseButtonStyle {
+  @apply inline-flex justify-center items-center p-2 rounded-full cursor-pointer;
+}
+.enabledButtonStyle {
+  @apply text-blue-500 hover:bg-blue-100;
+}
+.disabledButtonStyle {
+  @apply text-gray-300 cursor-not-allowed;
+}
+.box-1 {
+  @apply w-[80%] bg-white fixed bottom-0 z-0;
+}
+.box-2 {
+  @apply max-w-[800px] mx-auto;
+}
+.input-box {
+  @apply flex items-center px-3 mb-5 py-2 rounded-lg bg-[#fbfbfb];
+}
+.text-area {
+  @apply block mx-4 p-2.5 resize-none w-full focus:outline-none text-[1rem] text-black bg-white rounded-lg border border-gray-300 dark:placeholder-gray-400;
+}
+.send-logo {
+  @apply w-5 h-5 rotate-90 rtl:-rotate-90;
+}
+
+/* loading.tsx */
+.loading-div {
+  @apply h-[100vh] flex justify-center items-center;
+}
+
+/* Navbar.tsx */
+.nav-bar-box-1 {
+  @apply px-3 z-50 xl:w-[80%] w-[100%] fixed top-0 right-0 bg-white;
+}
+.nav-bar-box-2 {
+  @apply border-[1px] mt-3 shadow-xl rounded-xl flex 
+    justify-end items-center pr-[8rem] py-4 bg-gray-100;
+}
+.nav-bar-text {
+  @apply font-semibold px-5 text-blue-800;
+}
+.nav-bar-sub-text {
+  @apply text-[0.8rem] rounded-lg px-1 
+    font-semibold text-gray-700 absolute 
+    top-[-0.5rem] left-[8.5rem]  w-[8.3rem];
+}
+
+/* Query.tsx */
+.query-div {
+  @apply bg-[#F4F4F4] px-5 py-2 rounded-[1.1rem];
+}
+
+/* Sidebar.tsx */
+.hamburger {
+  @apply inline-flex fixed z-[400] top-[1.3rem] xl:hidden items-center p-2 ms-3 text-sm text-gray-500 rounded-lg;
+}
+.hamburger-side-bar {
+  @apply fixed bg-gray-50 left-0 top-0 z-40 w-72 py-2 px-5 h-[100vh] transition-transform;
+}
+.filtered-chats {
+  @apply h-full flex flex-col pb-[5.5rem] items-center justify-end px-3 py-4 overflow-y-auto;
+}
+.sidebar-btn-login {
+  @apply focus:outline-none text-center w-[10rem] text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2;
+}
+.sidebar-btn-signup {
+  @apply focus:outline-none border-[1px] text-center border-gray-300 text-black bg-white hover:bg-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2;
+}
+.new-chat {
+  @apply text-blue-500 border-black hover:bg-gray-200 rounded-md cursor-pointer;
+}
+
+/* SuggestionCards.tsx */
+.card-box {
+  @apply block h-[5rem] w-[350px] p-6 bg-white border border-gray-200 
+    rounded-lg shadow hover:bg-gray-100;
+}
+.card-text {
+  @apply font-normal text-gray-700;
+}
+
+/* Suggestions.tsx */
+.suggestion-page-box {
+  @apply relative mt-[15rem] flex flex-col justify-center items-center;
+}
+.openAi-image-box {
+  @apply w-[3rem] pb-[2rem];
+}
+.suggestion-queries-box {
+  @apply flex md:flex-row flex-col gap-3 mx-3;
+}
+
+/* Chat.tsx page */
+.profile-settings-container {
+  @apply fixed w-[18rem] left-1/2 top-1/2 
+    transform -translate-x-1/2 -translate-y-1/2 border p-5 
+    rounded-md bg-[#F4F4F4] z-50;
+}
+.navbar-outer-container {
+  @apply mt-[8rem] flex flex-col items-center gap-[3rem];
+}
+.query-message-container {
+  @apply flex w-full justify-center;
+}
+.query-outer-container {
+  @apply h-fit flex justify-end;
+}
+.response-aouter-container {
+  @apply mt-[10px] flex items-center gap-5;
+}
+.response-image {
+  @apply self-start w-[2.5rem] mt-2 
+    border-[1px] rounded-full p-2;
+}
+.skeleton-typography {
+  @apply min-w-[10rem] mb-[10rem];
+}
+.chat-input-outer-container {
+  @apply flex w-full justify-center mt-[5rem];
+}
+.disable-bg{
+  @apply bg-gray-400 fixed inset-0 opacity-50 h-screen top-0 w-full z-[60] block xl:hidden
+}
+
+/* Login.tsx */
+.alert-div {
+  @apply absolute w-full top-0 z-50;
+}
+.login-main-div {
+  @apply relative bg-orange-400 h-screen flex justify-center items-center;
+}
+.blur-image-main-div {
+  @apply absolute bg-cover flex justify-center items-center h-[100%] w-[100%] bg-orange-200;
+}
+.login-card-main-div {
+  @apply md:flex drop-shadow-2xl rounded-xl items-center md:h-[75%] md:w-[800px] bg-white;
+}
+.login-intro-card {
+  @apply hidden md:flex md:w-1/2 h-[100%] text-white rounded-tl-xl rounded-bl-xl bg-[#A4C5B5];
+}
+.login-intro-inner-card {
+  @apply h-full mx-[1rem] text-center flex justify-center items-center;
+}
+
+/* Section.tsx */
+.key-heading {
+  @apply text-gray-500 font-[500];
+}
+
+.selected-section-bg {
+  @apply bg-gray-200 rounded-lg;
+}

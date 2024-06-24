@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 import { getAllChats, getSingleChat } from "../helpers/api-communicator";
 import { Message, currentMessageType } from "../types";
+import { currentSectionAtom, isNewSectionAtom } from "./section-atoms";
 import { currentUserAtom, isLoggedInAtom } from "./user-info-atom";
 
 export const profileToggleAtom = atom<boolean>({
@@ -28,10 +29,16 @@ export const chatListSelector = selector<Message[]>({
   get: async ({ get }) => {
     const isLoggedIn = get(isLoggedInAtom);
     const { email } = get(currentUserAtom);
+    const { _id } = get(currentSectionAtom);
 
-    if (isLoggedIn && email) {
+    if (
+      isLoggedIn &&
+      _id != null &&
+      email &&
+      email !== process.env.REACT_APP_GUEST_EMAIL
+    ) {
       try {
-        const messages = await getAllChats(email);
+        const messages = await getAllChats(_id);
         return messages;
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -48,12 +55,18 @@ export const singleChatSelector = selector<Message | null>({
   key: "singleChatSelectorKey",
   get: async ({ get }) => {
     const currentMessageId = get(currentMessageAtom);
+    const isNewSection = get(isNewSectionAtom);
+    const currSection = get(currentSectionAtom);
     if (
       currentMessageId.message !== null &&
       currentMessageId.message.trim() !== ""
     ) {
       try {
-        const message = await getSingleChat(currentMessageId.message);
+        const message = await getSingleChat(
+          currentMessageId.message,
+          currSection._id!,
+          isNewSection
+        );
         return message;
       } catch (error) {
         console.error("Error fetching single chat message:", error);

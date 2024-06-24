@@ -20,21 +20,18 @@ const Suggestions = () => {
   };
   const queries = [
     {
-      q: "Tell me a pun about a chicken in outer space.",
+      q: "Tell me a riddle about a bicycle and a fish",
     },
     {
-      q: "Write a short story on oranges and apples",
-    },
-    {
-      q: "Tell me a random fact, but make it weird!",
+      q: "Tell me a joke about a cow in school.",
     },
   ];
   return (
-    <div className="h-[100vh] relative flex flex-col justify-center items-center">
-      <div className="w-[3rem] pb-[2rem]">
+    <div className="suggestion-page-box">
+      <div className="openAi-image-box">
         <img src={OpenAiImage} alt="" />
       </div>
-      <div className="flex md:flex-row flex-col gap-3 mx-3">
+      <div className="suggestion-queries-box">
         {queries.map(({ q }, key) => {
           return (
             <div

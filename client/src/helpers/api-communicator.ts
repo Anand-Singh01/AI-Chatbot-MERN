@@ -1,6 +1,6 @@
 // Contains Functions to connect to Express Server
 import axios from "axios";
-import { response, updateProfileInfoType } from "../types";
+import { response, sectionData, updateProfileInfoType } from "../types";
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -82,9 +82,18 @@ export const checkAuthStatus = async () => {
   }
 };
 
-export const getSingleChat = async (message: string | null) => {
+export const getSingleChat = async (
+  message: string | null,
+  sectionId: string | null,
+  isNewSection: boolean
+) => {
   try {
-    const res = await axios.post("/chats/getOne", { message });
+    const res = await axios.post("/chats/getOne", {
+      message,
+      isNewSection,
+      sectionId,
+    });
+
     if (res.status !== 200) {
       throw new Error("Error fetching chats");
     }
@@ -95,9 +104,9 @@ export const getSingleChat = async (message: string | null) => {
   }
 };
 
-export const getAllChats = async (email: string | null) => {
+export const getAllChats = async (sectionId: string) => {
   try {
-    const res = await axios.post("/chats/getAll", { email });
+    const res = await axios.post(`/chats/getAll/${sectionId}`);
     if (res.status !== 200) {
       throw new Error("Error fetching chats");
     }
@@ -105,5 +114,41 @@ export const getAllChats = async (email: string | null) => {
     return data.chats;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getSectionList = async (): Promise<sectionData> => {
+  try {
+    const res = await axios.post("/chats/getCategories");
+    if (res.status !== 200) {
+      throw new Error("Error fetching chats");
+    }
+    const data = await res.data;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+
+    return { chatSections: {} };
+  }
+};
+
+export const updateSectionName = async (
+  newName: string,
+  sectionId: string
+): Promise<{ sectionName: string } | null> => {
+  try {
+    const res = await axios.post("/chats/updateSectionName", {
+      newName,
+      sectionId,
+    });
+    if (res.status !== 200) {
+      throw new Error("Error updateing section name");
+    }
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 };

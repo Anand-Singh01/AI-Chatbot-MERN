@@ -1,6 +1,6 @@
 // This component makes a smooth transition from blurry image to an optimized one
 import { useState } from "react";
-import "../App.css";
+import "../css/index.css";
 interface blurEffect {
   src: string;
   placeholder: string;

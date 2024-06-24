@@ -43,18 +43,16 @@ export const verifyToken = (
 ) => {
   try {
     const token = req.signedCookies[COOKIE_NAME];
+    
     if (!token || token.trim() == "") {
-      res.locals.jwtData = {email:'test123@gmail.com'};
+      res.locals.jwtData = { email: "test123@gmail.com", id:"66556d1c5dcf848d421888be" };
       // return res.status(401).json({ message: "Session expired" });
       next();
-    }
-    else
-    {
+    } else {
       const data = jwt.verify(token, process.env.JWT_SECRET!);
       res.locals.jwtData = data;
       next();
     }
-    
   } catch (error) {
     console.log(error);
     return res.status(401).json({ message: "Session expired" });

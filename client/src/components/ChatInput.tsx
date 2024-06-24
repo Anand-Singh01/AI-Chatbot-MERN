@@ -30,20 +30,11 @@ export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
   //cleans query
   const message = query.trim() === "";
 
-  //style for send query button
-  const baseButtonStyle =
-    "inline-flex justify-center items-center p-2 rounded-full cursor-pointer";
-  const enabledButtonStyle = "text-blue-500 hover:bg-blue-100";
-  const disabledButtonStyle = "text-gray-300 cursor-not-allowed";
-
   return (
-    <div className="w-[80%] bg-white fixed bottom-0 z-0">
-      <div className="max-w-[800px] mx-auto">
-        <label className="mb-2 text-sm font-medium text-black sr-only">
-          Search
-        </label>
+    <div className="box-1">
+      <div className="box-2">
         <div className="relative">
-          <div className="flex items-center px-3 mb-5 py-2 rounded-lg bg-[#F4F4F4]">
+          <div className="input-box">
             {/* Send query on enter key press */}
             <textarea
               onKeyDown={(e) => {
@@ -57,7 +48,7 @@ export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
               value={query}
               id="default-search"
               rows={1}
-              className="block mx-4 p-2.5 resize-none w-full focus:outline-none text-md text-black bg-white rounded-lg border border-gray-300 dark:placeholder-gray-400"
+              className="text-area"
               placeholder="Your message..."
             ></textarea>
             <button
@@ -65,12 +56,12 @@ export const ChatInput = ({ setCurrentMessage, setChats }: ChatInputProps) => {
               disabled={message}
               onClick={submitQuery}
               type="submit"
-              className={`${baseButtonStyle} ${
-                message ? disabledButtonStyle : enabledButtonStyle
+              className={`baseButtonStyle ${
+                message ? "disabledButtonStyle" : "enabledButtonStyle"
               }`}
             >
               <svg
-                className="w-5 h-5 rotate-90 rtl:-rotate-90"
+                className="send-logo"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
