@@ -3,10 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { logoutUser } from "../helpers/api-communicator";
 import { chatAtom, currentMessageAtom } from "../store/chat-atom";
-import {
-  currentSectionAtom,
-  isNewSectionAtom,
-} from "../store/section-atoms";
+import { currentSectionAtom, isNewSectionAtom } from "../store/section-atoms";
 import { currentUserAtom, isLoggedInAtom } from "../store/user-info-atom";
 import Section from "./Section";
 const SideBar = ({

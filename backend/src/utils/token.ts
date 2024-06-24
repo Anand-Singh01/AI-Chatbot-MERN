@@ -46,7 +46,6 @@ export const verifyToken = (
     
     if (!token || token.trim() == "") {
       res.locals.jwtData = { email: "test123@gmail.com", id:"66556d1c5dcf848d421888be" };
-      // return res.status(401).json({ message: "Session expired" });
       next();
     } else {
       const data = jwt.verify(token, process.env.JWT_SECRET!);

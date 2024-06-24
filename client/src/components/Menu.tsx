@@ -6,16 +6,14 @@ import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useResetRecoilState } from "recoil";
 import { logoutUser } from "../helpers/api-communicator";
 import { chatAtom, currentMessageAtom } from "../store/chat-atom";
 import { currentUserAtom, isLoggedInAtom } from "../store/user-info-atom";
 
 export default function ToggleMenu() {
   const navigate = useNavigate();
-  // const setIsProfileVisible = useSetRecoilState(profileToggleAtom);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const currentUser = useRecoilValue(currentUserAtom);
   const resetChat = useResetRecoilState(chatAtom);
   const resetCurrentUserAtom = useResetRecoilState(currentUserAtom);
   const resetCurrentMessageAtom = useResetRecoilState(currentMessageAtom);
