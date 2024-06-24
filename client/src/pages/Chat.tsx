@@ -104,7 +104,7 @@ const Chat = () => {
   }, [
     currentMessage,
     isNewSection,
-    // setUpdateSectionList,
+    setSectionUpdate,
     setIsNewSection,
     currentUser.email,
     singleChatMessage.state,
