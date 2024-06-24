@@ -37,6 +37,7 @@ export const sectionListSelector = selector<sectionData>({
     const isLoggedIn = get(isLoggedInAtom);
     const { email } = get(currentUserAtom);
     // const updateSectionList = get(updateSectionListAtom);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const currSection = get(currentSectionAtom);
     const sectionNameUpdate = get(sectionNameUpdateAtom);
     const isNewSection = get(isNewSectionAtom);

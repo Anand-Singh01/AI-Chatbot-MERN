@@ -40,9 +40,7 @@ const Chat = () => {
     useRecoilState(currentMessageAtom);
   const singleChatMessage = useRecoilValueLoadable(singleChatSelector);
   const [isNewSection, setIsNewSection] = useRecoilState(isNewSectionAtom);
-  const [updateSectionList, setUpdateSectionList] = useRecoilState(
-    updateSectionListAtom
-  );
+  const setUpdateSectionList = useSetRecoilState(updateSectionListAtom);
   const setCurrentSection = useSetRecoilState(currentSectionAtom);
   const [isLoading, setIsPageLoading] = useState(true);
   const [isResponseLoading, setIsResponseLoading] = useState(false);
@@ -146,9 +144,11 @@ const Chat = () => {
           </>
         )}
         <div
-          className={`mt-3 scroll-m-0 xl:w-[80%] ${isProfileVisible ? "blur-[4px]" : ""}`}
+          className={`mt-3 scroll-m-0 xl:w-[80%] ${
+            isProfileVisible ? "blur-[4px]" : ""
+          }`}
         >
-                {chats.length === 0 ? <Suggestions /> : ""}
+          {chats.length === 0 ? <Suggestions /> : ""}
           <Navbar text="Knowledge Pro!" subText="Powered by GPT 3.5" />
           <div className="navbar-outer-container">
             {chats.map(({ message, response }: Message, key) => (

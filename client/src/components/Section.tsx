@@ -20,7 +20,7 @@ const Section = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const [sections, setSections] = useRecoilState(sectionListAtom);
   const [currSection, setCurrentSection] = useRecoilState(currentSectionAtom);
   const [editingSection, setEditingSection] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const setSectionNameUpdate = useSetRecoilState(sectionNameUpdateAtom);
   const [selectedSectionName, setSelectedSectionName] = useState("");
   const isNewSection = useSetRecoilState(isNewSectionAtom);
@@ -51,11 +51,11 @@ const Section = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 
   useEffect(() => {
     if (sectionList.state === "loading") {
-      setIsLoading(true);
+      // setIsLoading(true);
     } else if (sectionList.state === "hasValue") {
       console.log(sectionList.contents);
       setSections(sectionList.contents);
-      setIsLoading(false);
+      // setIsLoading(false);
     }
     // setUpdateSectionList(false);
   }, [sectionList, setSections, sections]);
