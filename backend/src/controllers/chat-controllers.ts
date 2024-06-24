@@ -58,7 +58,7 @@ export const getCategories = async (
         const sortedSections = filteredSections(sections);
         return res.json({ chatSections: sortedSections });
       } else {
-        return res.json({ sections: [] });
+        return res.json({ chatSections: [] });
       }
     }
   } catch (error) {
