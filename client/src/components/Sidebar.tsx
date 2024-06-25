@@ -46,7 +46,8 @@ const SideBar = ({
     }
   };
 
-  const startNewSection_click = () => {
+  const startNewSection_click = (options?: string) => {
+    console.log(options);
     setCurrentSection({
       sectionName: "",
       createdAt: "",
@@ -56,7 +57,10 @@ const SideBar = ({
     setChats([]);
     // setUpdateSectionList(false);
     set_bg_disabled(false);
-    toggleSidebar();
+    console.log(options === undefined);
+    if (options === undefined) {
+      toggleSidebar();
+    }
   };
 
   const handleHamburger_click = () => {
@@ -95,7 +99,7 @@ const SideBar = ({
         aria-label="Sidebar"
       >
         <div
-          onClick={startNewSection_click}
+          onClick={() => startNewSection_click()}
           title="New Chat"
           className="flex justify-end mt-[1rem]"
         >

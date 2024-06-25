@@ -39,7 +39,7 @@
   @apply text-gray-300 cursor-not-allowed;
 }
 .box-1 {
-  @apply w-[80%] bg-white fixed bottom-0 z-0;
+  @apply w-[100%] bg-white fixed bottom-0 z-0;
 }
 .box-2 {
   @apply max-w-[800px] mx-auto;

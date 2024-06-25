@@ -16,7 +16,7 @@ export default function Dropdown({
   _id,
   setEditingSection,
 }: {
-  startNewSection_click: () => void;
+  startNewSection_click: (options? : string) => void;
   _id: string;
   setEditingSection: (id: string) => void;
 }) {
@@ -43,7 +43,7 @@ export default function Dropdown({
           createdAt: "",
           _id: null,
         });
-        startNewSection_click();
+        startNewSection_click('delete');
         setSectionUpdate((new Date()).toString());
       }
     }
