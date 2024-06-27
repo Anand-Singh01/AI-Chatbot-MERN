@@ -18,7 +18,7 @@ import Dropdown from "./Dropdown";
 const Section = ({
   startNewSection_click,
 }: {
-  startNewSection_click: (options? : string) => void;
+  startNewSection_click: (options?: string) => void;
 }) => {
   const sectionList = useRecoilValueLoadable(sectionListSelector);
   const [sections, setSections] = useRecoilState(sectionListAtom);
@@ -27,7 +27,7 @@ const Section = ({
   const setSectionNameUpdate = useSetRecoilState(sectionUpdateAtom);
   // const [hoverSectionName, setHoverSectionName] = useState("");
   const isNewSection = useSetRecoilState(isNewSectionAtom);
-  const [hoverSection, setHoverSection] = useState({id:'', sectionName:''});
+  const [hoverSection, setHoverSection] = useState({ id: "", sectionName: "" });
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSectionNameUpdate = async () => {
@@ -36,8 +36,7 @@ const Section = ({
       const newName = hoverSection.sectionName;
       const data = await updateSectionName(newName, sectionId!);
       if (data != null) {
-        if(currSection._id === sectionId)
-        {  
+        if (currSection._id === sectionId) {
           setCurrentSection({ ...currSection, sectionName: data?.sectionName });
         }
         setSectionNameUpdate(new Date().toString());
@@ -91,19 +90,20 @@ const Section = ({
               <h3 className="key-heading">{sectionKey}</h3>
               {sections.chatSections[sectionKey]?.map(
                 (item: sectionType, index: number) => (
-                  <div className="flex items-center w-[15rem]">
+                  <div className="w-full overflow-hidden">
                     <div
-                      className="rounded-lg w-full flex"
+                      className="rounded-lg flex justify-between"
                       onMouseOver={() => {
-                        if(editingSection === '')
-                        {
-                          setHoverSection({sectionName:item.sectionName, id:item._id!})
+                        if (editingSection === "") {
+                          setHoverSection({
+                            sectionName: item.sectionName,
+                            id: item._id!,
+                          });
                         }
                       }}
                       onMouseOut={() => {
-                        if(editingSection === '')
-                        {
-                          setHoverSection({sectionName:'', id:''})
+                        if (editingSection === "") {
+                          setHoverSection({ sectionName: "", id: "" });
                         }
                       }}
                       key={index}
@@ -117,11 +117,15 @@ const Section = ({
                             }
                           }}
                           ref={inputRef}
+                          maxLength={15}
                           type="text"
                           className="pl-2"
                           value={hoverSection.sectionName}
                           onChange={(e) =>
-                            setHoverSection({...hoverSection, sectionName:e.target.value})
+                            setHoverSection({
+                              ...hoverSection,
+                              sectionName: e.target.value,
+                            })
                           }
                         />
                       ) : (
@@ -133,7 +137,7 @@ const Section = ({
                               item.sectionName
                             )
                           }
-                          className={`${
+                          className={` w-[200px] overflow-x-hidden ${
                             item._id === currSection._id
                               ? "selected-section-bg"
                               : item._id === hoverSection.id
@@ -144,13 +148,15 @@ const Section = ({
                           {item.sectionName}
                         </p>
                       )}
-                      {item._id === hoverSection.id && (
-                        <Dropdown
-                          startNewSection_click={startNewSection_click}
-                          _id={item._id!}
-                          setEditingSection={setEditingSection}
-                        />
-                      )}
+                      <div className="mr-[2rem]">
+                        {item._id === hoverSection.id && (
+                          <Dropdown
+                            startNewSection_click={startNewSection_click}
+                            _id={item._id!}
+                            setEditingSection={setEditingSection}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 )

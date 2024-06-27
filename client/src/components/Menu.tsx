@@ -1,5 +1,5 @@
 // Menu component for logout and show profile features.
-import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Menu } from "@mui/material";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
@@ -42,7 +42,7 @@ export default function ToggleMenu() {
   };
 
   return (
-    <div>
+    <div className='mx-2'>
       <Button
         sx={{
           padding: "0px",
@@ -55,7 +55,7 @@ export default function ToggleMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <MoreVertTwoToneIcon sx={{ color: "blue-300" }} />
+        <SettingsIcon sx={{ color: "blue-300" }}/>
       </Button>
       <Menu
         id="fade-menu"

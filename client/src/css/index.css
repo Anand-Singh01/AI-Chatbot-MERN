@@ -65,7 +65,7 @@
 }
 .nav-bar-box-2 {
   @apply border-[1px] mt-3 shadow-xl rounded-xl flex 
-    justify-end items-center pr-[8rem] py-4 bg-gray-100;
+    justify-end items-center pr-[9rem] py-4 bg-gray-100;
 }
 .nav-bar-text {
   @apply font-semibold px-5 text-blue-800;

@@ -119,7 +119,10 @@ export const getSingleChat = async (
         const section = await Section.create({
           user: user._id,
           createdAt: new Date().toISOString().slice(0, 10),
-          sectionName: "chat - " + new Date().toISOString().slice(0, 10),
+          sectionName:
+            message.length > 15
+              ? message.slice(0, 15) + "..."
+              : message.slice(0, 15),
         });
         sectionId = section._id;
         sectionName = section.sectionName;
@@ -185,26 +188,46 @@ const filteredSections = (sections: sections[]) => {
   const today = new Date();
   const yesterday = new Date(today);
   const past7days = new Date(today);
-
+  const past30days = new Date(today);
   yesterday.setDate(today.getDate() - 1);
   past7days.setDate(yesterday.getDate() - 7);
+  past30days.setDate(yesterday.getDate() - 30);
 
   const todayDate = today.toISOString().slice(0, 10);
   const yesterdayDate = yesterday.toISOString().slice(0, 10);
   const past7daysDate = past7days.toISOString().slice(0, 10);
-  const Today = sections.filter((s) => {
-    return s.createdAt === todayDate;
-  });
+  const currMonth = today.getMonth();
+  const Today = sections
+    .filter((s) => {
+      return s.createdAt === todayDate;
+    })
+    .reverse();
 
-  const Yesterday = sections.filter((s) => {
-    return s.createdAt === yesterdayDate;
-  });
+  const Yesterday = sections
+    .filter((s) => {
+      return s.createdAt === yesterdayDate;
+    })
+    .reverse();
 
-  const Past7days = sections.filter((s) => {
-    return s.createdAt >= past7daysDate && s.createdAt < yesterdayDate;
-  });
-
-  const final: { [key: string]: sections[] } = { Today, Yesterday, Past7days };
+  const Previous7days = sections
+    .filter((s) => {
+      return s.createdAt >= past7daysDate && s.createdAt < yesterdayDate;
+    })
+    .reverse();
+  const Past30days = sections
+    .filter((s) => {
+      return (
+        new Date(s.createdAt.toString()).getMonth() === currMonth &&
+        s.createdAt < past7daysDate
+      );
+    })
+    .reverse();
+  const final: { [key: string]: sections[] } = {
+    Today,
+    Yesterday,
+    Previous7days,
+    Past30days,
+  };
   let res: { [key: string]: sections[] } = {};
   Object.keys(final).forEach((key) => {
     if (final[key].length > 0) {
